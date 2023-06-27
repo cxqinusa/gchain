@@ -1,21 +1,52 @@
 version: 1
 accounts:
+- name: admin
+  coins:
+  - 10000000cgt
+  mnemonic: october pride genuine harvest reunion sight become tuna kingdom punch
+    girl lizard cat crater fee emotion seat test output safe volume caught design
+    soft
 - name: alice
   coins:
-  - 20000token
-  - 200000000stake
+  - 1000cgt
+  mnemonic: sugar narrow update three surround cupboard vital vapor fabric city father
+    toe tumble call element certain lava nose sponsor unaware code combine whale muscle
 - name: bob
   coins:
-  - 10000token
-  - 100000000stake
+  - 1200cgt
+  mnemonic: mammal knife face mechanic short balance toe raven armor asset grass wing
+    crew quit arena purchase lawsuit scene style fork gauge they bottom mammal
+faucet:
+  name: admin
+  coins:
+  - 100cgt
 client:
   openapi:
     path: docs/static/openapi.yml
-faucet:
-  name: bob
-  coins:
-  - 5token
-  - 100000stake
+genesis:
+  app_state:
+    crisis:
+      constant_fee:
+        denom: cgt
+    gov:
+      deposit_params:
+        min_deposit:
+        - amount: "50"
+          denom: cgt
+    mint:
+      params:
+        inflation_max: "0.000000000000000000"
+        inflation_min: "0.000000000000000000"
+        mint_denom: cgt
+    staking:
+      params:
+        bond_denom: cgt
+    swap:
+      params:
+        admin: cgt12ltvts09ga3gj32hsmnwq922ze0gmk4tv8nrzd
+        commissionRate: "0.050000000000000000"
 validators:
-- name: alice
-  bonded: 100000000stake
+- name: admin
+  bonded: 1000000cgt
+  config:
+    moniker: "node0"
