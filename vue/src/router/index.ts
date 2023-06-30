@@ -8,7 +8,7 @@ const routerHistory = createWebHistory();
 const routes = [
   { path: "/", component: PortfolioView },
   { path: "/data", component: DataView },
-  { game: "/game", component: GameView },
+  { path: "/game", component: GameView },
 ];
 
 const router = createRouter({
