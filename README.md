@@ -1,6 +1,16 @@
 # gchain
 **gchain** is a blockchain built using Cosmos SDK and Tendermint and created with [Ignite CLI](https://ignite.com/cli).
 
+### Install
+To install ignite v0.26.1 and go v1.19.10, execute the following command on your machine:
+
+```
+wget https://github.com/ignite/cli/releases/download/v0.26.1/ignite_0.26.1_linux_amd64.tar.gz
+wget https://go.dev/dl/go1.19.10.linux-amd64.tar.gz
+```
+`username/gchain` should match the `username` and `repo_name` of the Github repository to which the source code was pushed. Learn more about [the install process](https://github.com/allinbits/starport-installer).
+
+
 ## Get started
 
 ```
@@ -25,15 +35,6 @@ npm run dev
 
 The frontend app is built using the `@starport/vue` and `@starport/vuex` packages. For details, see the [monorepo for Ignite front-end development](https://github.com/ignite/web).
 
-
-### Install
-To install ignite v0.26.1 and go v1.19.10, execute the following command on your machine:
-
-```
-wget https://github.com/ignite/cli/releases/download/v0.26.1/ignite_0.26.1_linux_amd64.tar.gz
-wget https://go.dev/dl/go1.19.10.linux-amd64.tar.gz
-```
-`username/gchain` should match the `username` and `repo_name` of the Github repository to which the source code was pushed. Learn more about [the install process](https://github.com/allinbits/starport-installer).
 
 ## Learn more
 
