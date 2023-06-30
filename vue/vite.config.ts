@@ -19,5 +19,12 @@ export default defineConfig({
       },
     },
   },
-  publicDir: "./src/{assets,plugins}"
+  build: {
+    assetsDir: 'assets',
+    rollupOptions: {
+      output: {
+        assetFileNames: 'assets/[name]-[hash][ext]'
+      }
+    }
+  }
 });

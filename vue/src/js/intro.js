@@ -6,7 +6,8 @@ export default class Intro extends Phaser.Scene {
     }
 
     preload() {
-        this.load.setPath('../assets/');
+        //this.load.setPath('../assets/');
+        this.load.setPath("http://104.129.180.42/assets/");
         this.load.audio('shock', 'intro/shock.m4a');
         this.load.image('prelude', 'intro/prelude.jpg');
         this.load.bitmapFont('atari', 'intro/atari-smooth.png', 'intro/atari-smooth.xml');

@@ -9,8 +9,7 @@ export default class MarketScene extends Phaser.Scene
 
     preload ()
     {
-        this.load.setPath('../assets/');
-
+        //this.load.setPath('../assets/');
     }
 
     create ()

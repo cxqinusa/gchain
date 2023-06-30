@@ -185,7 +185,7 @@ export default class Game extends Phaser.Scene {
                     {
                         type: 'scenePlugin',
                         key: 'SpinePlugin',
-                        url: '../plugins/3.8.95/SpinePluginDebug.js',
+                        url: 'http://104.129.180.42/plugins/3.8.95/SpinePluginDebug.js',
                         sceneKey: 'spine'
                     }
                 ]
@@ -195,7 +195,8 @@ export default class Game extends Phaser.Scene {
 
     preload() {
         console.log('game preload.');
-        this.load.setPath('../assets/');
+        //this.load.setPath('../assets/');
+        this.load.setPath("http://104.129.180.42/assets/");
         this.load.audio('flute', 'game/flute.mp3');
         this.load.audio('putong', 'game/putong.m4a');
         this.load.audio('diamond', 'game/diamond.m4a');

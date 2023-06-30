@@ -1,11 +1,12 @@
 import Phaser from 'phaser';
-import spacepng from "@/assets/boot/space.png";
-import yellowpng from "@/assets/boot/yellow.png";
-import earthpng from "@/assets/boot/earth+sword.png";
-import musicmp3 from "@/assets/boot/music.mp3";
-import desyrelpng from "@/assets/font/bitmap/desyrel.png";
-import desyrelxml from "@/assets/font/bitmap/desyrel.xml";
-
+/*
+import spaceURL from '../assets/boot/space.png'
+import yellowURL from '../assets/boot/yellow.png'
+import earthURL from '../assets/boot/earth+sword.png'
+import musicURL from '../assets/boot/music.mp3'
+import despngURL from '../assets/font/bitmap/desyrel.png'
+import desxmlURL from '../assets/font/bitmap/desyrel.xml'
+*/
 let sprites = [];
 // Overlay is Canvas Blend Modes
 export default class Boot extends Phaser.Scene
@@ -17,19 +18,13 @@ export default class Boot extends Phaser.Scene
 
     preload ()
     {
-        /*
-        this.load.setPath('assets/');
+        //this.load.setPath("../assets/");
+        this.load.setPath("http://104.129.180.42/assets/");
         this.load.image('space', 'boot/space.png');
         this.load.image('yellow', 'boot/yellow.png');
         this.load.image('earth', 'boot/earth+sword.png');
         this.load.audio('music', 'boot/music.mp3');
         this.load.bitmapFont('desyrel', 'font/bitmap/desyrel.png', 'font/bitmap/desyrel.xml');
-        */
-        this.load.image('space', spacepng);
-        this.load.image('yellow', yellowpng);
-        this.load.image('earth', earthpng);
-        this.load.audio('music', musicmp3);
-        this.load.bitmapFont('desyrel', desyrelpng, desyrelxml);
     }
 
     create ()

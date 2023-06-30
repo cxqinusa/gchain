@@ -21,7 +21,7 @@ export function initGame(){
         height: 800,
         backgroundColor: '#000000',
         parent: 'game-container',
-        scene: [Boot, Game, Intro, ChainScene, DataScene, TreasureScene, PuzzleScene, NftScene, MarketScene],
+        scene: [Boot,Intro,Game,ChainScene,DataScene,TreasureScene,PuzzleScene,NftScene,MarketScene],
         physics: {
             default: 'arcade',
             arcade: {debug: false}
