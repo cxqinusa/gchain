@@ -5,3 +5,6 @@ build/
 .idea/
 .vscode/
 .DS_Store
+
+ts-client/node_modules
+
