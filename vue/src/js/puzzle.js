@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 import {SpineTask} from "./task";
+import {env} from "@/env";
 
 export default class PuzzleScene extends Phaser.Scene {
     constructor() {
@@ -9,8 +10,7 @@ export default class PuzzleScene extends Phaser.Scene {
     taskIndex;
 
     preload() {
-        //this.load.setPath('../assets/');
-        this.load.setPath("http://104.129.180.42/assets/");
+        this.load.setPath(env.assetPath);
         this.load.audio('got', 'treasure/got.m4a');
         this.load.audio('fail', 'treasure/fail.m4a');
         this.load.image('puzzle-1', 'puzzle/puzzle-1.png');

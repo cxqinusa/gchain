@@ -6,6 +6,7 @@ import NftScene from "./nft.js";
 import PuzzleScene from "./puzzle.js";
 import TreasureScene from "./treasure.js";
 import MarketScene from "./market.js";
+import {env} from "@/env";
 
 //自定义三个精灵
 class CustomSpineIdle {
@@ -196,7 +197,7 @@ export default class Game extends Phaser.Scene {
     preload() {
         console.log('game preload.');
         //this.load.setPath('../assets/');
-        this.load.setPath("http://104.129.180.42/assets/");
+        this.load.setPath(env.assetPath);
         this.load.audio('flute', 'game/flute.mp3');
         this.load.audio('putong', 'game/putong.m4a');
         this.load.audio('diamond', 'game/diamond.m4a');

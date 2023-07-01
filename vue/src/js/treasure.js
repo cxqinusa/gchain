@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 import {SpineTask} from "./task";
+import {env} from "@/env";
 
 // Overlay is Canvas Blend Modes
 export default class TreasureScene extends Phaser.Scene {
@@ -11,8 +12,7 @@ export default class TreasureScene extends Phaser.Scene {
     }
 
     preload() {
-        //this.load.setPath('../assets/');
-        this.load.setPath("http://104.129.180.42/assets/");
+        this.load.setPath(env.assetPath);
         this.load.audio('got', 'treasure/got.m4a');
         this.load.audio('fail', 'treasure/fail.m4a');
         this.load.image('gold', ['treasure/gold.png', 'treasure/gold-n.png']);

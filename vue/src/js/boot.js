@@ -1,4 +1,6 @@
 import Phaser from 'phaser';
+import {env} from "@/env";
+
 /*
 import spaceURL from '../assets/boot/space.png'
 import yellowURL from '../assets/boot/yellow.png'
@@ -18,8 +20,7 @@ export default class Boot extends Phaser.Scene
 
     preload ()
     {
-        //this.load.setPath("../assets/");
-        this.load.setPath("http://104.129.180.42/assets/");
+        this.load.setPath(env.assetPath);
         this.load.image('space', 'boot/space.png');
         this.load.image('yellow', 'boot/yellow.png');
         this.load.image('earth', 'boot/earth+sword.png');
