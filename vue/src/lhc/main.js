@@ -12,7 +12,7 @@ import MarketScene from './market.js';
 import {CustomParams} from './task.js';
 
 export function initGame(){
-    console.log('initGame...');
+    console.log('initGame lhc...');
     // 创建全局变量并实例化 CustomParams
     window.customParam = new CustomParams(100,100,100);
     const config = {
@@ -29,5 +29,10 @@ export function initGame(){
     };
 
     let game = new Phaser.Game(config);
+    return game;
+}
 
+export function stopGame(game){
+    console.log('stopGame snow...');
+    game.destroy(true);
 }

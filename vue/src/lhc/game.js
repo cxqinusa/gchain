@@ -38,7 +38,7 @@ export default class Game extends Phaser.Scene {
 
     //设置奔跑和站立的精灵位置
     setSpineVisible(action, posx, posy, direction) {
-        console.log('spine:x=', posx, ',y=', posy, ',action=', action, ',direction=', direction);
+        //console.log('spine:x=', posx, ',y=', posy, ',action=', action, ',direction=', direction);
         if (direction == 'left') {
             this.spineIdle.spine.setScale(-0.15, 0.15);
             this.spineRun.spine.setScale(-0.15, 0.15);
@@ -186,7 +186,7 @@ export default class Game extends Phaser.Scene {
                     {
                         type: 'scenePlugin',
                         key: 'SpinePlugin',
-                        url: 'http://104.129.180.42/plugins/3.8.95/SpinePluginDebug.js',
+                        url: '/plugins/3.8.95/SpinePluginDebug.js',
                         sceneKey: 'spine'
                     }
                 ]

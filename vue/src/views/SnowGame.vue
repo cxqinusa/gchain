@@ -5,11 +5,15 @@
 </template>
 
 <script>
-import { initGame } from "@/js/main.js";
+import { initGame,stopGame } from "@/snow/main.js";
 
 export default {
+  name: "SnowGame",
   mounted() {
-    initGame();
+    this.game = initGame();
+  },
+  beforeUnmount() {
+    stopGame(this.game);
   },
 };
 </script>

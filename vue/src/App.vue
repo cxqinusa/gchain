@@ -12,9 +12,13 @@ const items = [
     to: "/data",
   },
   {
-      label: "Game",
-      to: "/game",
+      label: "lhcGame",
+      to: "/lhc",
     },
+  {
+    label: "snowGame",
+    to: "/snow",
+  },
 ];
 </script>
 
