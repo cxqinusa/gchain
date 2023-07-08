@@ -8,5 +8,5 @@ option go_package = "gchain/x/player/types";
 // Params defines the parameters for the module.
 message Params {
   option (gogoproto.goproto_stringer) = false;
-  
+
 }

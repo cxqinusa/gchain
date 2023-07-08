@@ -526,6 +526,7 @@ func New(
 		keys[playermoduletypes.StoreKey],
 		keys[playermoduletypes.MemStoreKey],
 		app.GetSubspace(playermoduletypes.ModuleName),
+		app.BankKeeper,
 	)
 	playerModule := playermodule.NewAppModule(appCodec, app.PlayerKeeper, app.AccountKeeper, app.BankKeeper)
 

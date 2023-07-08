@@ -27,3 +27,7 @@ const (
 	LHCStatusKey  = "lhc:"
 	SNOWStatusKey = "snow:"
 )
+
+const (
+	AdminAddress = "cgt12ltvts09ga3gj32hsmnwq922ze0gmk4t6vhwne"
+)

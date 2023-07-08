@@ -17,14 +17,18 @@ func (k msgServer) BuyPlayerStatus(goCtx context.Context, msg *types.MsgBuyPlaye
 	if err != nil {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, "invalid creator address")
 	}
+	adminAddress, err := sdk.AccAddressFromBech32(types.AdminAddress) //k.GetParams(ctx).Admin
+	if err != nil {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, "invalid admin address")
+	}
 
 	// 检查账户余额
-	if err := k.CheckBalance(ctx, creatorAddress.String(), msg.Denom, msg.Amount); err != nil {
+	if err := k.CheckBalance(ctx, creatorAddress, msg.Denom, msg.Amount); err != nil {
 		return nil, err
 	}
 
 	// 扣除账户余额
-	if err := k.DeductBalance(ctx, creatorAddress.String(), msg.Denom, msg.Amount); err != nil {
+	if err := k.DeductBalance(ctx, creatorAddress, adminAddress, msg.Denom, msg.Amount); err != nil {
 		return nil, err
 	}
 
@@ -39,6 +43,7 @@ func (k msgServer) BuyPlayerStatus(goCtx context.Context, msg *types.MsgBuyPlaye
 			return nil, err
 		}
 	}
+	lhcdata.Address = msg.Creator
 	lhcdata.Health += int32(msg.Amount)
 	lhcdata.Fighting += int32(msg.Amount)
 	lhcdata.Intelligence += int32(msg.Amount)
@@ -52,10 +57,10 @@ func (k msgServer) BuyPlayerStatus(goCtx context.Context, msg *types.MsgBuyPlaye
 	return &types.MsgBuyPlayerStatusResponse{lhcdata}, nil
 }
 
-func (k msgServer) CheckBalance(ctx sdk.Context, creator string, denom string, amount uint64) error {
+func (k msgServer) CheckBalance(ctx sdk.Context, creator sdk.AccAddress, denom string, amount uint64) error {
 	// 获取账户余额
 	balance := k.bankKeeper.GetBalance(ctx, creator, denom)
-	if balance == nil {
+	if balance.IsZero() {
 		return sdkerrors.ErrInsufficientFunds // 账户余额不足
 	}
 
@@ -67,11 +72,13 @@ func (k msgServer) CheckBalance(ctx sdk.Context, creator string, denom string, a
 	return nil
 }
 
-func (k msgServer) DeductBalance(ctx sdk.Context, creator string, denom string, amount uint64) error {
-	// TODO: 扣除账户余额的逻辑
+func (k msgServer) DeductBalance(ctx sdk.Context, creator sdk.AccAddress, admin sdk.AccAddress, denom string, amount uint64) error {
+
+	// 把代币转到admin账号
 	// 扣除账户余额
 	coins := sdk.NewCoins(sdk.NewCoin(denom, sdk.NewIntFromUint64(amount)))
-	err := k.bankKeeper.SendCoinsFromAccountToModule(ctx, creator, types.ModuleName, coins)
+	//err := k.bankKeeper.SendCoinsFromAccountToModule(ctx, creator, types.AdminAddress, coins) //banktypes.ModuleName
+	err := k.bankKeeper.SendCoins(ctx, creator, admin, coins)
 	if err != nil {
 		return err // 扣除账户余额失败
 	}
