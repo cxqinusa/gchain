@@ -7,7 +7,7 @@ import "./style/index.css";
 import "@ignt/vue-library/dist/style.css";
 import mitt from "mitt";
 
-const eventBus = mitt();
+export const eventBus = mitt();
 const app = createApp(App);
 app.config.globalProperties.eventBus = eventBus;
 app.use(createPinia());

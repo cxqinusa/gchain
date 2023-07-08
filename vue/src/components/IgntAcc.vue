@@ -141,6 +141,7 @@ import { IgntWarningIcon } from "@ignt/vue-library";
 import { useClient } from "@/composables/useClient";
 import { useWalletStore } from "@/stores/useWalletStore";
 import useCosmosBaseTendermintV1Beta1 from "@/composables/useCosmosBaseTendermintV1Beta1";
+import {Amount} from "@/utils/interfaces";
 
 export interface State {
   modalPage: string;
@@ -157,6 +158,7 @@ const initialState: State = {
 };
 
 // state
+const enableIgniteConnectKelpr = ref(true);
 const state = reactive(initialState);
 
 // composables
@@ -212,8 +214,45 @@ let disconnect = (): void => {
   walletStore.signOut();
 };
 
+
+async function updatePlayStatusByLhcTx(json:string) {
+  console.log('begin updatePlayStatusByLhcTx:'+json);
+  const fee = [{ denom: "", amount: "" }];
+  let memo = '';
+
+  const jsondata = JSON.parse(json);
+  let payload = {
+    creator: jsondata.address,
+    lhc: {
+      address: jsondata.address,
+      health: jsondata.health,
+      intelligence: jsondata.intelligence,
+      fighting: jsondata.fighting,
+    },
+  };
+
+  try {
+    let updateStatus = () =>
+        client.GchainPlayer.tx.sendMsgUpdatePlayerStatus({
+          value: payload,
+          fee: { amount: fee as Readonly<Amount[]>, gas: "200000" },
+          memo,
+        });
+
+    const txResult = await updateStatus();
+    if (txResult.code) {
+      console.dir("updateStatus:"+JSON.stringify(txResult));
+      throw new Error();
+    }
+  } catch (e) {
+    console.error(e);
+  }
+}
+
+
 // check if already connected
 onMounted(async () => {
+  console.log("client.signer:"+client.signer);
   if (client.signer) {
     try {
       await tryToConnectToKeplr();
@@ -221,16 +260,19 @@ onMounted(async () => {
       console.warn("Keplr not connected");
     }
   }
-});
 
-const enableIgniteConnectKelpr = ref(true);
-const instance = getCurrentInstance();
-if (instance) {
-  const { appContext } = instance;
-  const { eventBus } = appContext.config.globalProperties;
-  eventBus.on('igniteHeaderChanged', (boolValue:boolean) => {
-    console.log('igniteHeaderChanged', boolValue);
-    enableIgniteConnectKelpr.value = boolValue;
-  });
-}
+  const instance = getCurrentInstance();
+  if (instance) {
+    const { appContext } = instance;
+    const { eventBus } = appContext.config.globalProperties;
+    //在Vue组件的<script>标签中，不能使用箭头函数 (=>)，箭头函数是ES6语法，在一些旧的浏览器或环境中可能不被支持，导致抛出语法错误
+    // eventBus.on('updatePlayStatus', (boolValue:boolean) => {
+    //   console.log('eventBus updatePlayStatus:', boolValue);
+    // });
+    eventBus.on('updatePlayStatus', async function (json:string) {
+      //console.log('eventBus updatePlayStatus:', json);
+      await updatePlayStatusByLhcTx(json);
+    });
+  }
+});
 </script>

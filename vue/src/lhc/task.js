@@ -125,10 +125,10 @@ class SpineTask {
 }
 
 class KeplrClient{
-    constructor(client, address) {
+    constructor(signingClient, address) {
 
         //StargateClient
-        this.client = client;
+        this.signingClient = signingClient;
 
         //keplr地址：cgt12ltvts09ga3gj32hsmnwq922ze0gmk4t6vhwne
         this.address = address;

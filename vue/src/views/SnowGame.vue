@@ -11,14 +11,14 @@ export default {
   name: "SnowGame",
   mounted() {
     // 触发自定义事件，通知父组件切换 showHeader 的值
-    console.log('SnowGame ignite-header:false');
-    this.eventBus.emit("igniteHeaderChanged", false);
+    //console.log('SnowGame ignite-header:false');
+    //this.eventBus.emit("igniteHeaderChanged", false);
     this.game = initGame();
   },
   beforeUnmount() {
     // 触发自定义事件，通知父组件切换 showHeader 的值
-    console.log('SnowGame ignite-header:true');
-    this.eventBus.emit("igniteHeaderChanged", true);
+    //console.log('SnowGame ignite-header:true');
+    //this.eventBus.emit("igniteHeaderChanged", true);
     stopGame(this.game);
   },
 };

@@ -119,7 +119,7 @@
     <div style="width: 100%; height: 24px" />
 
     <div>
-      <IgntButton style="width: 100%" @click="buyPointByLhcTx" :busy="isLhcTxOngoing" >使用LHC购买令狐冲积分</IgntButton>
+      <IgntButton style="width: 100%" @click="buyPlayStatusByLhcTx" :busy="isLhcTxOngoing" >使用CGT购买令狐冲生命值</IgntButton>
       <div v-if="isLhcTxError" class="flex items-center justify-center text-xs text-red-500 italic mt-2" >
         交易失败
       </div>
@@ -188,7 +188,7 @@ const state = reactive(initialState);
 const client = useClient();
 const sendMsgSend = client.CosmosBankV1Beta1.tx.sendMsgSend;
 const sendMsgTransfer = client.IbcApplicationsTransferV1.tx.sendMsgTransfer;
-const sendMsgUpdatePlayerStatus = client.GchainPlayer.tx.sendMsgBuyPlayerStatus;
+const sendMsgBuyPlayerStatus = client.GchainPlayer.tx.sendMsgBuyPlayerStatus;
 const { address } = useAddress();
 const { balances } = useAssets(100);
 
@@ -363,7 +363,7 @@ const bootstrapTxAmount = () => {
 };
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
-const buyPointByLhcTx = async (): Promise<void> => {
+const buyPlayStatusByLhcTx = async (): Promise<void> => {
   state.lhcUIState = UI_STATE.TX_SIGNING;
 
   const fee: Array<Amount> = state.tx.fees.map((x) => ({
@@ -375,21 +375,21 @@ const buyPointByLhcTx = async (): Promise<void> => {
 
   let payload: any = {
     creator: address.value,
-    denom: "lhc",
+    denom: "cgt",
     amount: "100",
   };
 
   try {
-    let buyPoint = () =>
-        sendMsgUpdatePlayerStatus({
+    let buyStatus = () =>
+        sendMsgBuyPlayerStatus({
           value: payload,
           fee: { amount: fee as Readonly<Amount[]>, gas: "200000" },
           memo,
         });
 
-    const txResult = await buyPoint();
-
+    const txResult = await buyStatus();
     if (txResult.code) {
+      console.dir("buyPlayStatus:"+JSON.stringify(txResult));
       throw new Error();
     }
     resetTx();
