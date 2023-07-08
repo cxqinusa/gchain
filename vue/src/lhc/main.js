@@ -9,12 +9,13 @@ import TreasureScene from './treasure.js';
 import PuzzleScene from './puzzle.js';
 import NftScene from './nft.js';
 import MarketScene from './market.js';
-import {CustomParams} from './task.js';
+import {CustomParams,KeplrClient} from './task.js';
 
 export function initGame(){
     console.log('initGame lhc...');
     // 创建全局变量并实例化 CustomParams
-    window.customParam = new CustomParams(100,100,100);
+    window.customParam = new CustomParams(0,0,0);
+    window.keplrClient = new KeplrClient(null,'');
     const config = {
         type: Phaser.AUTO,
         width: 1200,

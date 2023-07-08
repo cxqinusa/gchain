@@ -5,8 +5,11 @@ import App from "./App.vue";
 import router from "./router";
 import "./style/index.css";
 import "@ignt/vue-library/dist/style.css";
+import mitt from "mitt";
 
+const eventBus = mitt();
 const app = createApp(App);
+app.config.globalProperties.eventBus = eventBus;
 app.use(createPinia());
 app.use(router);
 app.use(VueQueryPlugin);

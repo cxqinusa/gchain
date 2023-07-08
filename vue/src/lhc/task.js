@@ -1,3 +1,4 @@
+import {env} from "@/env";
 // 定义自定义参数
 /*
 //必须定义为类，普通对象在多个场景中不能直接共享。普通对象的属性和值是独立的，每个场景都会有自己的对象实例
@@ -31,12 +32,13 @@ class SpineTask {
     //type有两个：礼物，谜题和寻宝
     //question,describe和answer是针对谜题的，问题，描述和答案
     //nft是代表答对该谜题或者寻到宝时，获取到的nft名称，这里只是名称
-    constructor(type, question, describe, answer, nft, health) {
+    constructor(type, question, describe, answer, nft, nfturi, health) {
         this.type = type;
         this.question = question;
         this.describe = describe;
         this.answer = answer;
         this.nft = nft;
+        this.nfturi = nfturi;
         this.health = health;
         this.deadline = 0;
         this.taskhandle = undefined; //房子/礼物等对象，用于destroy
@@ -59,70 +61,79 @@ class SpineTask {
         new SpineTask('puzzle', '武器谜题', '你来到一个密室，看到墙上挂着五把不同的武器：剑、刀、棍、鞭、锤。\n' +
             '每把武器上都有一个数字，分别是2、5、()、11、14。根据某种规律，你需要找出武器棍的数字。\n' +
             '线索：数字之间存在某种模式或关系，需要寻找规律。\n' +
-            '选项：A: 5, B: 9, C: 8, D: 17\n', 'C', '武器'),
+            '选项：A: 5, B: 9, C: 8, D: 17\n', 'C', '武器', env.nftPath + 'gift-1.png'),
         new SpineTask('puzzle', '阴阳谜局', '你来到一间阴室，看到墙上有两个开关，一个标有「阴」，一个标有「阳」。\n' +
             '房间中央有一个盒子，但你必须根据一组线索来选择正确的开关才能打开盒子。\n' +
             '线索：线索是一句谜语「先天一灯，后天两炬，心之一拍，倾刻生灭。」\n' +
-            '选项：A: 「阳」开关, B: 「阴」开关\n', 'A', '宝盒'),
-        new SpineTask('treasure', '', '', '', '九阴真经'),
-        new SpineTask('treasure', '', '', '', '葵花宝典'),
-        new SpineTask('treasure', '', '', '', '黯然销魂掌'),
+            '选项：A: 「阳」开关, B: 「阴」开关\n', 'A', '宝盒', env.nftPath + 'gift-2.png'),
+        new SpineTask('treasure', '', '', '', '九阴真经', env.nftPath + 'treasure-1.png'),
+        new SpineTask('treasure', '', '', '', '葵花宝典', env.nftPath + 'treasure-2.png'),
+        new SpineTask('treasure', '', '', '', '黯然销魂掌', env.nftPath + 'treasure-3.png'),
         // 可以添加更多的任务对象
     ];
     static presentArray = [
-        new SpineTask('present', '', '', '', '', Phaser.Math.Between(10, 100)),
-        new SpineTask('present', '', '', '', '', Phaser.Math.Between(10, 100)),
-        new SpineTask('present', '', '', '', '', Phaser.Math.Between(10, 100)),
-        new SpineTask('present', '', '', '', '', Phaser.Math.Between(10, 100)),
-        new SpineTask('present', '', '', '', '', Phaser.Math.Between(10, 100)),
-        new SpineTask('present', '', '', '', '', Phaser.Math.Between(10, 100)),
-        new SpineTask('present', '', '', '', '', Phaser.Math.Between(10, 100)),
-        new SpineTask('present', '', '', '', '', Phaser.Math.Between(10, 100)),
-        new SpineTask('present', '', '', '', '', Phaser.Math.Between(10, 100)),
-        new SpineTask('present', '', '', '', '', Phaser.Math.Between(10, 100)),
-        new SpineTask('present', '', '', '', '', Phaser.Math.Between(10, 100)),
-        new SpineTask('present', '', '', '', '', Phaser.Math.Between(10, 100)),
-        new SpineTask('present', '', '', '', '', Phaser.Math.Between(10, 100)),
-        new SpineTask('present', '', '', '', '', Phaser.Math.Between(10, 100)),
-        new SpineTask('present', '', '', '', '', Phaser.Math.Between(10, 100)),
-        new SpineTask('present', '', '', '', '', Phaser.Math.Between(10, 100)),
-        new SpineTask('present', '', '', '', '', Phaser.Math.Between(10, 100)),
-        new SpineTask('present', '', '', '', '', Phaser.Math.Between(10, 100)),
-        new SpineTask('present', '', '', '', '', Phaser.Math.Between(10, 100)),
-        new SpineTask('present', '', '', '', '', Phaser.Math.Between(10, 100)),
-        new SpineTask('present', '', '', '', '', Phaser.Math.Between(10, 100)),
-        new SpineTask('present', '', '', '', '', Phaser.Math.Between(10, 100)),
-        new SpineTask('present', '', '', '', '', Phaser.Math.Between(10, 100)),
-        new SpineTask('present', '', '', '', '', Phaser.Math.Between(10, 100)),
-        new SpineTask('present', '', '', '', '', Phaser.Math.Between(10, 100)),
-        new SpineTask('present', '', '', '', '', Phaser.Math.Between(10, 100)),
-        new SpineTask('present', '', '', '', '', Phaser.Math.Between(10, 100)),
-        new SpineTask('present', '', '', '', '', Phaser.Math.Between(10, 100)),
-        new SpineTask('present', '', '', '', '', Phaser.Math.Between(10, 100)),
-        new SpineTask('present', '', '', '', '', Phaser.Math.Between(10, 100)),
-        new SpineTask('present', '', '', '', '', Phaser.Math.Between(10, 100)),
-        new SpineTask('present', '', '', '', '', Phaser.Math.Between(10, 100)),
-        new SpineTask('present', '', '', '', '', Phaser.Math.Between(10, 100)),
-        new SpineTask('present', '', '', '', '', Phaser.Math.Between(10, 100)),
-        new SpineTask('present', '', '', '', '', Phaser.Math.Between(10, 100)),
-        new SpineTask('present', '', '', '', '', Phaser.Math.Between(10, 100)),
-        new SpineTask('present', '', '', '', '', Phaser.Math.Between(10, 100)),
-        new SpineTask('present', '', '', '', '', Phaser.Math.Between(10, 100)),
-        new SpineTask('present', '', '', '', '', Phaser.Math.Between(10, 100)),
-        new SpineTask('present', '', '', '', '', Phaser.Math.Between(10, 100)),
-        new SpineTask('present', '', '', '', '', Phaser.Math.Between(10, 100)),
-        new SpineTask('present', '', '', '', '', Phaser.Math.Between(10, 100)),
-        new SpineTask('present', '', '', '', '', Phaser.Math.Between(10, 100)),
-        new SpineTask('present', '', '', '', '', Phaser.Math.Between(10, 100)),
-        new SpineTask('present', '', '', '', '', Phaser.Math.Between(10, 100)),
-        new SpineTask('present', '', '', '', '', Phaser.Math.Between(10, 100)),
-        new SpineTask('present', '', '', '', '', Phaser.Math.Between(10, 100)),
-        new SpineTask('present', '', '', '', '', Phaser.Math.Between(10, 100)),
-        new SpineTask('present', '', '', '', '', Phaser.Math.Between(10, 100)),
-        new SpineTask('present', '', '', '', '', Phaser.Math.Between(10, 100)),
+        new SpineTask('present', '', '', '', '','' , Phaser.Math.Between(10, 100)),
+        new SpineTask('present', '', '', '', '','' , Phaser.Math.Between(10, 100)),
+        new SpineTask('present', '', '', '', '','' , Phaser.Math.Between(10, 100)),
+        new SpineTask('present', '', '', '', '','' , Phaser.Math.Between(10, 100)),
+        new SpineTask('present', '', '', '', '','' , Phaser.Math.Between(10, 100)),
+        new SpineTask('present', '', '', '', '','' , Phaser.Math.Between(10, 100)),
+        new SpineTask('present', '', '', '', '','' , Phaser.Math.Between(10, 100)),
+        new SpineTask('present', '', '', '', '','' , Phaser.Math.Between(10, 100)),
+        new SpineTask('present', '', '', '', '','' , Phaser.Math.Between(10, 100)),
+        new SpineTask('present', '', '', '', '','' , Phaser.Math.Between(10, 100)),
+        new SpineTask('present', '', '', '', '','' , Phaser.Math.Between(10, 100)),
+        new SpineTask('present', '', '', '', '','' , Phaser.Math.Between(10, 100)),
+        new SpineTask('present', '', '', '', '','' , Phaser.Math.Between(10, 100)),
+        new SpineTask('present', '', '', '', '','' , Phaser.Math.Between(10, 100)),
+        new SpineTask('present', '', '', '', '','' , Phaser.Math.Between(10, 100)),
+        new SpineTask('present', '', '', '', '','' , Phaser.Math.Between(10, 100)),
+        new SpineTask('present', '', '', '', '','' , Phaser.Math.Between(10, 100)),
+        new SpineTask('present', '', '', '', '','' , Phaser.Math.Between(10, 100)),
+        new SpineTask('present', '', '', '', '','' , Phaser.Math.Between(10, 100)),
+        new SpineTask('present', '', '', '', '','' , Phaser.Math.Between(10, 100)),
+        new SpineTask('present', '', '', '', '','' , Phaser.Math.Between(10, 100)),
+        new SpineTask('present', '', '', '', '','' , Phaser.Math.Between(10, 100)),
+        new SpineTask('present', '', '', '', '','' , Phaser.Math.Between(10, 100)),
+        new SpineTask('present', '', '', '', '','' , Phaser.Math.Between(10, 100)),
+        new SpineTask('present', '', '', '', '','' , Phaser.Math.Between(10, 100)),
+        new SpineTask('present', '', '', '', '','' , Phaser.Math.Between(10, 100)),
+        new SpineTask('present', '', '', '', '','' , Phaser.Math.Between(10, 100)),
+        new SpineTask('present', '', '', '', '','' , Phaser.Math.Between(10, 100)),
+        new SpineTask('present', '', '', '', '','' , Phaser.Math.Between(10, 100)),
+        new SpineTask('present', '', '', '', '','' , Phaser.Math.Between(10, 100)),
+        new SpineTask('present', '', '', '', '','' , Phaser.Math.Between(10, 100)),
+        new SpineTask('present', '', '', '', '','' , Phaser.Math.Between(10, 100)),
+        new SpineTask('present', '', '', '', '','' , Phaser.Math.Between(10, 100)),
+        new SpineTask('present', '', '', '', '','' , Phaser.Math.Between(10, 100)),
+        new SpineTask('present', '', '', '', '','' , Phaser.Math.Between(10, 100)),
+        new SpineTask('present', '', '', '', '','' , Phaser.Math.Between(10, 100)),
+        new SpineTask('present', '', '', '', '','' , Phaser.Math.Between(10, 100)),
+        new SpineTask('present', '', '', '', '','' , Phaser.Math.Between(10, 100)),
+        new SpineTask('present', '', '', '', '','' , Phaser.Math.Between(10, 100)),
+        new SpineTask('present', '', '', '', '','' , Phaser.Math.Between(10, 100)),
+        new SpineTask('present', '', '', '', '','' , Phaser.Math.Between(10, 100)),
+        new SpineTask('present', '', '', '', '','' , Phaser.Math.Between(10, 100)),
+        new SpineTask('present', '', '', '', '','' , Phaser.Math.Between(10, 100)),
+        new SpineTask('present', '', '', '', '','' , Phaser.Math.Between(10, 100)),
+        new SpineTask('present', '', '', '', '','' , Phaser.Math.Between(10, 100)),
+        new SpineTask('present', '', '', '', '','' , Phaser.Math.Between(10, 100)),
+        new SpineTask('present', '', '', '', '','' , Phaser.Math.Between(10, 100)),
+        new SpineTask('present', '', '', '', '','' , Phaser.Math.Between(10, 100)),
+        new SpineTask('present', '', '', '', '','' , Phaser.Math.Between(10, 100)),
     ];
 }
 
+class KeplrClient{
+    constructor(client, address) {
+
+        //StargateClient
+        this.client = client;
+
+        //keplr地址：cgt12ltvts09ga3gj32hsmnwq922ze0gmk4t6vhwne
+        this.address = address;
+    }
+}
 // 导出
-export {SpineTask, CustomParams};
+export {SpineTask, CustomParams, KeplrClient};
 

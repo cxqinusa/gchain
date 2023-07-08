@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { RouterView } from "vue-router";
 import IgntHeader from "./components/IgntHeader.vue";
+import { getCurrentInstance, ref } from 'vue'
 
 const items = [
   {
@@ -20,9 +21,10 @@ const items = [
     to: "/snow",
   },
 ];
-</script>
 
+</script>
 <template>
-  <IgntHeader :nav-items="items"></IgntHeader>
+  <IgntHeader :nav-items="items" style='margin:0'></IgntHeader>
   <RouterView />
 </template>
+

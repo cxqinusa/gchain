@@ -19,6 +19,7 @@
       aria-label="Connect wallet"
       type="primary"
       @click="state.connectWalletModal = true"
+      :disabled="!enableIgniteConnectKelpr"
     >
       Connect wallet
     </IgntButton>
@@ -127,7 +128,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, reactive, watch } from "vue";
+import {computed, getCurrentInstance, onMounted, reactive, ref, watch} from "vue";
 import useKeplr from "@/def-composables/useKeplr";
 import IgntAccDropdown from "./IgntAccDropdown.vue";
 import { IgntButton } from "@ignt/vue-library";
@@ -177,6 +178,10 @@ watch(
       let { name, bech32Address } = await getKeplrAccParams(newVal);
       state.keplrParams.name = name;
       state.keplrParams.bech32Address = bech32Address;
+
+      console.log('ignite acc chainId:'+newVal);
+      console.log('ignite acc name:'+name);
+      console.log('ignite acc bech32Address:'+bech32Address);
     }
   }
 );
@@ -217,4 +222,15 @@ onMounted(async () => {
     }
   }
 });
+
+const enableIgniteConnectKelpr = ref(true);
+const instance = getCurrentInstance();
+if (instance) {
+  const { appContext } = instance;
+  const { eventBus } = appContext.config.globalProperties;
+  eventBus.on('igniteHeaderChanged', (boolValue:boolean) => {
+    console.log('igniteHeaderChanged', boolValue);
+    enableIgniteConnectKelpr.value = boolValue;
+  });
+}
 </script>

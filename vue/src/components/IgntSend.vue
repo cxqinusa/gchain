@@ -115,6 +115,18 @@
         Tx submitted succesfully
       </div>
     </div>
+
+    <div style="width: 100%; height: 24px" />
+
+    <div>
+      <IgntButton style="width: 100%" @click="buyPointByLhcTx" :busy="isLhcTxOngoing" >使用LHC购买令狐冲积分</IgntButton>
+      <div v-if="isLhcTxError" class="flex items-center justify-center text-xs text-red-500 italic mt-2" >
+        交易失败
+      </div>
+      <div v-if="isLhcTxSuccess" class="flex items-center justify-center text-xs text-green-500 italic mt-2" >
+        交易成功
+      </div>
+    </div>
   </div>
 </template>
 <script setup lang="ts">
@@ -156,6 +168,7 @@ enum UI_STATE {
 interface State {
   tx: TxData;
   currentUIState: UI_STATE;
+  lhcUIState: UI_STATE;
   advancedOpen: boolean;
 }
 
@@ -168,12 +181,14 @@ const initialState: State = {
     fees: [],
   },
   currentUIState: UI_STATE.SEND,
+  lhcUIState: UI_STATE.SEND,
   advancedOpen: false,
 };
 const state = reactive(initialState);
 const client = useClient();
 const sendMsgSend = client.CosmosBankV1Beta1.tx.sendMsgSend;
 const sendMsgTransfer = client.IbcApplicationsTransferV1.tx.sendMsgTransfer;
+const sendMsgUpdatePlayerStatus = client.GchainPlayer.tx.sendMsgBuyPlayerStatus;
 const { address } = useAddress();
 const { balances } = useAssets(100);
 
@@ -185,6 +200,7 @@ const resetTx = (): void => {
   state.tx.fees = [];
 
   state.currentUIState = UI_STATE.SEND;
+  state.lhcUIState = UI_STATE.SEND;
 };
 const sendTx = async (): Promise<void> => {
   state.currentUIState = UI_STATE.TX_SIGNING;
@@ -284,6 +300,17 @@ const isTxSuccess = computed<boolean>(() => {
 const isTxError = computed<boolean>(() => {
   return state.currentUIState === UI_STATE.TX_ERROR;
 });
+
+const isLhcTxOngoing = computed<boolean>(() => {
+  return state.lhcUIState === UI_STATE.TX_SIGNING;
+});
+const isLhcTxSuccess = computed<boolean>(() => {
+  return state.lhcUIState === UI_STATE.TX_SUCCESS;
+});
+const isLhcTxError = computed<boolean>(() => {
+  return state.lhcUIState === UI_STATE.TX_ERROR;
+});
+
 let validTxFees = computed<boolean>(() =>
   state.tx.fees.every((x) => {
     let parsedAmount = parseAmount(x.amount);
@@ -332,6 +359,47 @@ const bootstrapTxAmount = () => {
       ...firstBalance,
       amount: "",
     };
+  }
+};
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+const buyPointByLhcTx = async (): Promise<void> => {
+  state.lhcUIState = UI_STATE.TX_SIGNING;
+
+  const fee: Array<Amount> = state.tx.fees.map((x) => ({
+    denom: x.denom,
+    amount: x.amount == "" ? "0" : x.amount,
+  }));
+
+  let memo = state.tx.memo;
+
+  let payload: any = {
+    creator: address.value,
+    denom: "lhc",
+    amount: "100",
+  };
+
+  try {
+    let buyPoint = () =>
+        sendMsgUpdatePlayerStatus({
+          value: payload,
+          fee: { amount: fee as Readonly<Amount[]>, gas: "200000" },
+          memo,
+        });
+
+    const txResult = await buyPoint();
+
+    if (txResult.code) {
+      throw new Error();
+    }
+    resetTx();
+    state.lhcUIState = UI_STATE.TX_SUCCESS;
+    setTimeout(() => {
+      resetTx();
+    }, 2500);
+  } catch (e) {
+    console.error(e);
+    state.lhcUIState = UI_STATE.TX_ERROR;
   }
 };
 bootstrapTxAmount();
