@@ -17,3 +17,13 @@ const (
 func KeyPrefix(p string) []byte {
 	return []byte(p)
 }
+
+const (
+	NFTKey      = "nft:"
+	NFTCountKey = "nft-count:"
+)
+
+const (
+	LHCStatusKey  = "lhc:"
+	SNOWStatusKey = "snow:"
+)
