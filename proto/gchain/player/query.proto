@@ -1,0 +1,45 @@
+syntax = "proto3";
+
+package gchain.player;
+
+import "gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+import "cosmos/base/query/v1beta1/pagination.proto";
+import "gchain/player/params.proto";
+import "gchain/player/lhcdata.proto";
+
+option go_package = "gchain/x/player/types";
+
+// Query defines the gRPC querier service.
+service Query {
+  
+  // Parameters queries the parameters of the module.
+  rpc Params (QueryParamsRequest) returns (QueryParamsResponse) {
+    option (google.api.http).get = "/gchain/player/params";
+  
+  }
+  
+  // Queries a list of ReadPlayerStatus items.
+  rpc ReadPlayerStatus (QueryReadPlayerStatusRequest) returns (QueryReadPlayerStatusResponse) {
+    option (google.api.http).get = "/gchain/player/read_player_status/{address}";
+  
+  }
+}
+// QueryParamsRequest is request type for the Query/Params RPC method.
+message QueryParamsRequest {}
+
+// QueryParamsResponse is response type for the Query/Params RPC method.
+message QueryParamsResponse {
+  
+  // params holds all the parameters of this module.
+  Params params = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryReadPlayerStatusRequest {
+  string address = 1;
+}
+
+message QueryReadPlayerStatusResponse {
+  Lhcdata lhc = 1;
+}
+

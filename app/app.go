@@ -103,6 +103,12 @@ import (
 	tmos "github.com/tendermint/tendermint/libs/os"
 	dbm "github.com/tendermint/tm-db"
 
+	nftmodule "gchain/x/nft"
+	nftmodulekeeper "gchain/x/nft/keeper"
+	nftmoduletypes "gchain/x/nft/types"
+	playermodule "gchain/x/player"
+	playermodulekeeper "gchain/x/player/keeper"
+	playermoduletypes "gchain/x/player/types"
 	swapmodule "gchain/x/swap"
 	swapmodulekeeper "gchain/x/swap/keeper"
 	swapmoduletypes "gchain/x/swap/types"
@@ -165,6 +171,8 @@ var (
 		ica.AppModuleBasic{},
 		vesting.AppModuleBasic{},
 		swapmodule.AppModuleBasic{},
+		playermodule.AppModuleBasic{},
+		nftmodule.AppModuleBasic{},
 		// this line is used by starport scaffolding # stargate/app/moduleBasic
 	)
 
@@ -240,6 +248,10 @@ type App struct {
 	ScopedICAHostKeeper  capabilitykeeper.ScopedKeeper
 
 	SwapKeeper swapmodulekeeper.Keeper
+
+	PlayerKeeper playermodulekeeper.Keeper
+
+	NftKeeper nftmodulekeeper.Keeper
 	// this line is used by starport scaffolding # stargate/app/keeperDeclaration
 
 	// mm is the module manager
@@ -285,6 +297,8 @@ func New(
 		ibctransfertypes.StoreKey, icahosttypes.StoreKey, capabilitytypes.StoreKey, group.StoreKey,
 		icacontrollertypes.StoreKey,
 		swapmoduletypes.StoreKey,
+		playermoduletypes.StoreKey,
+		nftmoduletypes.StoreKey,
 		// this line is used by starport scaffolding # stargate/app/storeKey
 	)
 	tkeys := sdk.NewTransientStoreKeys(paramstypes.TStoreKey)
@@ -507,6 +521,22 @@ func New(
 	)
 	swapModule := swapmodule.NewAppModule(appCodec, app.SwapKeeper, app.AccountKeeper, app.BankKeeper)
 
+	app.PlayerKeeper = *playermodulekeeper.NewKeeper(
+		appCodec,
+		keys[playermoduletypes.StoreKey],
+		keys[playermoduletypes.MemStoreKey],
+		app.GetSubspace(playermoduletypes.ModuleName),
+	)
+	playerModule := playermodule.NewAppModule(appCodec, app.PlayerKeeper, app.AccountKeeper, app.BankKeeper)
+
+	app.NftKeeper = *nftmodulekeeper.NewKeeper(
+		appCodec,
+		keys[nftmoduletypes.StoreKey],
+		keys[nftmoduletypes.MemStoreKey],
+		app.GetSubspace(nftmoduletypes.ModuleName),
+	)
+	nftModule := nftmodule.NewAppModule(appCodec, app.NftKeeper, app.AccountKeeper, app.BankKeeper)
+
 	// this line is used by starport scaffolding # stargate/app/keeperDefinition
 
 	/**** IBC Routing ****/
@@ -573,6 +603,8 @@ func New(
 		transferModule,
 		icaModule,
 		swapModule,
+		playerModule,
+		nftModule,
 		// this line is used by starport scaffolding # stargate/app/appModule
 	)
 
@@ -603,6 +635,8 @@ func New(
 		paramstypes.ModuleName,
 		vestingtypes.ModuleName,
 		swapmoduletypes.ModuleName,
+		playermoduletypes.ModuleName,
+		nftmoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/beginBlockers
 	)
 
@@ -628,6 +662,8 @@ func New(
 		upgradetypes.ModuleName,
 		vestingtypes.ModuleName,
 		swapmoduletypes.ModuleName,
+		playermoduletypes.ModuleName,
+		nftmoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/endBlockers
 	)
 
@@ -658,6 +694,8 @@ func New(
 		upgradetypes.ModuleName,
 		vestingtypes.ModuleName,
 		swapmoduletypes.ModuleName,
+		playermoduletypes.ModuleName,
+		nftmoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/initGenesis
 	)
 
@@ -688,6 +726,8 @@ func New(
 		ibc.NewAppModule(app.IBCKeeper),
 		transferModule,
 		swapModule,
+		playerModule,
+		nftModule,
 		// this line is used by starport scaffolding # stargate/app/appModule
 	)
 	app.sm.RegisterStoreDecoders()
@@ -893,6 +933,8 @@ func initParamsKeeper(appCodec codec.BinaryCodec, legacyAmino *codec.LegacyAmino
 	paramsKeeper.Subspace(icacontrollertypes.SubModuleName)
 	paramsKeeper.Subspace(icahosttypes.SubModuleName)
 	paramsKeeper.Subspace(swapmoduletypes.ModuleName)
+	paramsKeeper.Subspace(playermoduletypes.ModuleName)
+	paramsKeeper.Subspace(nftmoduletypes.ModuleName)
 	// this line is used by starport scaffolding # stargate/app/paramSubspace
 
 	return paramsKeeper

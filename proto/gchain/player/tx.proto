@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+package gchain.player;
+
+import "gchain/player/lhcdata.proto";
+
+option go_package = "gchain/x/player/types";
+
+// Msg defines the Msg service.
+service Msg {
+  rpc BuyPlayerStatus    (MsgBuyPlayerStatus   ) returns (MsgBuyPlayerStatusResponse   );
+  rpc UpdatePlayerStatus (MsgUpdatePlayerStatus) returns (MsgUpdatePlayerStatusResponse);
+}
+message MsgBuyPlayerStatus {
+  string creator = 1;
+  string denom   = 2;
+  uint64 amount  = 3;
+}
+
+message MsgBuyPlayerStatusResponse {
+  Lhcdata lhc = 1;
+}
+
+message MsgUpdatePlayerStatus {
+  string  creator = 1;
+  Lhcdata lhc     = 2;
+}
+
+message MsgUpdatePlayerStatusResponse {
+  uint64 resultId = 1;
+}
+

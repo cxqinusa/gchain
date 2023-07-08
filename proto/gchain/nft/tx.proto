@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package gchain.nft;
+
+import "gchain/nft/nftdata.proto";
+
+option go_package = "gchain/x/nft/types";
+
+// Msg defines the Msg service.
+service Msg {
+  rpc MintNft (MsgMintNft) returns (MsgMintNftResponse);
+}
+message MsgMintNft {
+  string  creator = 1;
+  Nftdata task    = 2;
+}
+
+message MsgMintNftResponse {
+  uint64 id = 1;
+}
+

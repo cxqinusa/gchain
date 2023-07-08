@@ -1,0 +1,15 @@
+syntax = "proto3";
+package gchain.nft;
+
+option go_package = "gchain/x/nft/types";
+
+message Nftdata {
+  
+  uint64 id = 1; 
+  string name = 2; 
+  string description = 3; 
+  string meta = 4; 
+  string uri = 5; 
+  string urihash = 6; 
+  string owner = 7; 
+}

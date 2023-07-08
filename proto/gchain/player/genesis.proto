@@ -1,0 +1,12 @@
+syntax = "proto3";
+package gchain.player;
+
+import "gogoproto/gogo.proto";
+import "gchain/player/params.proto";
+
+option go_package = "gchain/x/player/types";
+
+// GenesisState defines the player module's genesis state.
+message GenesisState {
+  Params params = 1 [(gogoproto.nullable) = false];
+}

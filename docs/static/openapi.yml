@@ -32581,6 +32581,168 @@ paths:
           format: int64
       tags:
         - Query
+  /gchain/nft/params:
+    get:
+      summary: Parameters queries the parameters of the module.
+      operationId: GchainNftParams
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              params:
+                description: params holds all the parameters of this module.
+                type: object
+            description: >-
+              QueryParamsResponse is response type for the Query/Params RPC
+              method.
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
+  /gchain/player/params:
+    get:
+      summary: Parameters queries the parameters of the module.
+      operationId: GchainPlayerParams
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              params:
+                description: params holds all the parameters of this module.
+                type: object
+            description: >-
+              QueryParamsResponse is response type for the Query/Params RPC
+              method.
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
+  /gchain/player/read_player_status/{address}:
+    get:
+      summary: Queries a list of ReadPlayerStatus items.
+      operationId: GchainPlayerReadPlayerStatus
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              lhc:
+                type: object
+                properties:
+                  address:
+                    type: string
+                  health:
+                    type: integer
+                    format: int32
+                  intelligence:
+                    type: integer
+                    format: int32
+                  fighting:
+                    type: integer
+                    format: int32
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: address
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
+  /gchain/swap/params:
+    get:
+      summary: Parameters queries the parameters of the module.
+      operationId: GchainSwapParams
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              params:
+                description: params holds all the parameters of this module.
+                type: object
+                properties:
+                  admin:
+                    type: string
+                  commissionRate:
+                    type: string
+            description: >-
+              QueryParamsResponse is response type for the Query/Params RPC
+              method.
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
   /ibc/apps/interchain_accounts/controller/v1/owners/{owner}/connections/{connection_id}:
     get:
       summary: >-
@@ -66790,6 +66952,124 @@ definitions:
             NOTE: The amount field is an Int which implements the custom method
             signatures required by gogoproto.
     description: Period defines a length of time and amount of coins that will vest.
+  gchain.nft.MsgMintNftResponse:
+    type: object
+    properties:
+      id:
+        type: string
+        format: uint64
+  gchain.nft.Nftdata:
+    type: object
+    properties:
+      id:
+        type: string
+        format: uint64
+      name:
+        type: string
+      description:
+        type: string
+      meta:
+        type: string
+      uri:
+        type: string
+      urihash:
+        type: string
+      owner:
+        type: string
+  gchain.nft.Params:
+    type: object
+    description: Params defines the parameters for the module.
+  gchain.nft.QueryParamsResponse:
+    type: object
+    properties:
+      params:
+        description: params holds all the parameters of this module.
+        type: object
+    description: QueryParamsResponse is response type for the Query/Params RPC method.
+  gchain.player.Lhcdata:
+    type: object
+    properties:
+      address:
+        type: string
+      health:
+        type: integer
+        format: int32
+      intelligence:
+        type: integer
+        format: int32
+      fighting:
+        type: integer
+        format: int32
+  gchain.player.MsgBuyPlayerStatusResponse:
+    type: object
+    properties:
+      lhc:
+        type: object
+        properties:
+          address:
+            type: string
+          health:
+            type: integer
+            format: int32
+          intelligence:
+            type: integer
+            format: int32
+          fighting:
+            type: integer
+            format: int32
+  gchain.player.MsgUpdatePlayerStatusResponse:
+    type: object
+    properties:
+      resultId:
+        type: string
+        format: uint64
+  gchain.player.Params:
+    type: object
+    description: Params defines the parameters for the module.
+  gchain.player.QueryParamsResponse:
+    type: object
+    properties:
+      params:
+        description: params holds all the parameters of this module.
+        type: object
+    description: QueryParamsResponse is response type for the Query/Params RPC method.
+  gchain.player.QueryReadPlayerStatusResponse:
+    type: object
+    properties:
+      lhc:
+        type: object
+        properties:
+          address:
+            type: string
+          health:
+            type: integer
+            format: int32
+          intelligence:
+            type: integer
+            format: int32
+          fighting:
+            type: integer
+            format: int32
+  gchain.swap.Params:
+    type: object
+    properties:
+      admin:
+        type: string
+      commissionRate:
+        type: string
+    description: Params defines the parameters for the module.
+  gchain.swap.QueryParamsResponse:
+    type: object
+    properties:
+      params:
+        description: params holds all the parameters of this module.
+        type: object
+        properties:
+          admin:
+            type: string
+          commissionRate:
+            type: string
+    description: QueryParamsResponse is response type for the Query/Params RPC method.
   ibc.applications.interchain_accounts.controller.v1.MsgRegisterInterchainAccountResponse:
     type: object
     properties:
