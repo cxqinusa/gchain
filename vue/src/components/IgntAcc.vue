@@ -141,7 +141,6 @@ import { IgntWarningIcon } from "@ignt/vue-library";
 import { useClient } from "@/composables/useClient";
 import { useWalletStore } from "@/stores/useWalletStore";
 import useCosmosBaseTendermintV1Beta1 from "@/composables/useCosmosBaseTendermintV1Beta1";
-import {Amount} from "@/utils/interfaces";
 
 export interface State {
   modalPage: string;
@@ -217,7 +216,10 @@ let disconnect = (): void => {
 
 async function updatePlayStatusByLhcTx(json:string) {
   console.log('begin updatePlayStatusByLhcTx:'+json);
-  const fee = [{ denom: "", amount: "" }];
+  const fee = {
+    amount: [{ denom: "cgt", amount: "0" }], // 手续费的币种和数量
+    gas: "200000", // 指定的 gas 数量
+  };
   let memo = '';
 
   const jsondata = JSON.parse(json);
@@ -235,7 +237,7 @@ async function updatePlayStatusByLhcTx(json:string) {
     let updateStatus = () =>
         client.GchainPlayer.tx.sendMsgUpdatePlayerStatus({
           value: payload,
-          fee: { amount: fee as Readonly<Amount[]>, gas: "200000" },
+          fee: fee,
           memo,
         });
 
