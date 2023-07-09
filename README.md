@@ -65,7 +65,7 @@ The frontend app is built using the `@starport/vue` and `@starport/vuex` package
 ```
 
 ## 先睹为快
-<img width="1000" height="560" src="D:\tony\cosmos\第二期中文培训\lhc.png">
+<img width="1000" height="560" src="img/lhc.png">
 
 
 ## Learn more
