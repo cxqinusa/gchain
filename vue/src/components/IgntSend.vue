@@ -116,15 +116,27 @@
       </div>
     </div>
 
+    <div style="width: 100%; height: 36px" />
+
+    <div>
+      <IgntButton style="width: 100%" @click="swapCoinsTx" :busy="isSwapTxOngoing" >swap代币: CGT===LHC</IgntButton>
+      <div v-if="isSwapTxError" class="flex items-center justify-center text-xs text-red-500 italic mt-2" >
+        swap失败
+      </div>
+      <div v-if="isSwapTxSuccess" class="flex items-center justify-center text-xs text-green-500 italic mt-2" >
+        swap成功
+      </div>
+    </div>
+
     <div style="width: 100%; height: 24px" />
 
     <div>
-      <IgntButton style="width: 100%" @click="buyPlayStatusByLhcTx" :busy="isLhcTxOngoing" >使用CGT购买令狐冲生命值</IgntButton>
+      <IgntButton style="width: 100%" @click="buyPlayStatusByLhcTx" :busy="isLhcTxOngoing" >使用LHC购买令狐冲生命值</IgntButton>
       <div v-if="isLhcTxError" class="flex items-center justify-center text-xs text-red-500 italic mt-2" >
-        交易失败
+        购买失败
       </div>
       <div v-if="isLhcTxSuccess" class="flex items-center justify-center text-xs text-green-500 italic mt-2" >
-        交易成功
+        购买成功
       </div>
     </div>
   </div>
@@ -169,6 +181,7 @@ interface State {
   tx: TxData;
   currentUIState: UI_STATE;
   lhcUIState: UI_STATE;
+  swapUIState: UI_STATE;
   advancedOpen: boolean;
 }
 
@@ -182,6 +195,7 @@ const initialState: State = {
   },
   currentUIState: UI_STATE.SEND,
   lhcUIState: UI_STATE.SEND,
+  swapUIState: UI_STATE.SEND,
   advancedOpen: false,
 };
 const state = reactive(initialState);
@@ -189,6 +203,7 @@ const client = useClient();
 const sendMsgSend = client.CosmosBankV1Beta1.tx.sendMsgSend;
 const sendMsgTransfer = client.IbcApplicationsTransferV1.tx.sendMsgTransfer;
 const sendMsgBuyPlayerStatus = client.GchainPlayer.tx.sendMsgBuyPlayerStatus;
+const sendMsgSwapCoin = client.GchainSwap.tx.sendMsgSwapCoin;
 const { address } = useAddress();
 const { balances } = useAssets(100);
 
@@ -201,6 +216,7 @@ const resetTx = (): void => {
 
   state.currentUIState = UI_STATE.SEND;
   state.lhcUIState = UI_STATE.SEND;
+  state.swapUIState = UI_STATE.SEND;
 };
 const sendTx = async (): Promise<void> => {
   state.currentUIState = UI_STATE.TX_SIGNING;
@@ -291,6 +307,8 @@ const hasAnyBalance = computed<boolean>(
     balances.value.assets.length > 0 &&
     balances.value.assets.some((x) => parseAmount(x.amount ?? "0").isPositive())
 );
+
+
 const isTxOngoing = computed<boolean>(() => {
   return state.currentUIState === UI_STATE.TX_SIGNING;
 });
@@ -301,6 +319,7 @@ const isTxError = computed<boolean>(() => {
   return state.currentUIState === UI_STATE.TX_ERROR;
 });
 
+
 const isLhcTxOngoing = computed<boolean>(() => {
   return state.lhcUIState === UI_STATE.TX_SIGNING;
 });
@@ -310,6 +329,18 @@ const isLhcTxSuccess = computed<boolean>(() => {
 const isLhcTxError = computed<boolean>(() => {
   return state.lhcUIState === UI_STATE.TX_ERROR;
 });
+
+
+const isSwapTxOngoing = computed<boolean>(() => {
+  return state.swapUIState === UI_STATE.TX_SIGNING;
+});
+const isSwapTxSuccess = computed<boolean>(() => {
+  return state.swapUIState === UI_STATE.TX_SUCCESS;
+});
+const isSwapTxError = computed<boolean>(() => {
+  return state.swapUIState === UI_STATE.TX_ERROR;
+});
+
 
 let validTxFees = computed<boolean>(() =>
   state.tx.fees.every((x) => {
@@ -375,7 +406,7 @@ const buyPlayStatusByLhcTx = async (): Promise<void> => {
 
   let payload: any = {
     creator: address.value,
-    denom: "cgt",
+    denom: "lhc",
     amount: "100",
   };
 
@@ -402,5 +433,49 @@ const buyPlayStatusByLhcTx = async (): Promise<void> => {
     state.lhcUIState = UI_STATE.TX_ERROR;
   }
 };
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+const swapCoinsTx = async (): Promise<void> => {
+  state.swapUIState = UI_STATE.TX_SIGNING;
+
+  const fee: Array<Amount> = state.tx.fees.map((x) => ({
+    denom: x.denom,
+    amount: x.amount == "" ? "0" : x.amount,
+  }));
+
+  let memo = state.tx.memo;
+
+  let payload: any = {
+    creator: address.value,
+    amountIn: {denom: "cgt", amount: "500"},
+    amountOutMin: {denom: "lhc", amount: "500"},
+  };
+
+  try {
+    let cswap = () =>
+        sendMsgSwapCoin({
+          value: payload,
+          fee: { amount: fee as Readonly<Amount[]>, gas: "200000" },
+          memo,
+        });
+
+    const txResult = await cswap();
+    if (txResult.code) {
+      console.dir("swapcoin:"+JSON.stringify(txResult));
+      throw new Error();
+    }
+    resetTx();
+    state.swapUIState = UI_STATE.TX_SUCCESS;
+    setTimeout(() => {
+      resetTx();
+    }, 2500);
+  } catch (e) {
+    console.error(e);
+    state.swapUIState = UI_STATE.TX_ERROR;
+  }
+};
+
 bootstrapTxAmount();
 </script>

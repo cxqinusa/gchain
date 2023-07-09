@@ -1,8 +1,8 @@
 const gchain = {
 	chainId: "gchain",
 	chainName: "gchain-cosmos",
-	rpc: "http://127.0.0.1:26657",
-	rest: "http://127.0.0.1:1317",
+	rpc: "http://10.30.31.138:26657",
+	rest: "http://10.30.31.138:1317",
 	stakeCurrency: {
 		coinDenom: "CGT",
 		coinMinimalDenom: "ucgt",
