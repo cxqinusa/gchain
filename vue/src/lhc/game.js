@@ -312,7 +312,7 @@ export default class Game extends Phaser.Scene {
             loop: true // 设置为重复触发
         });
         this.time.addEvent({
-            delay: 10000, //随机延迟时间为 10000 毫秒
+            delay: 1000, //随机延迟时间为 1000 毫秒
             callback: this.triggerChain, // 触发事件的回调函数
             callbackScope: this, // 回调函数的作用域
             loop: true // 设置为重复触发
@@ -451,13 +451,13 @@ export default class Game extends Phaser.Scene {
 
     //定时调用数据上链
     triggerChain() {
-        //10000毫秒调用一次
-        window.customParam.health -= 10;    //生命值：初始化100，每分钟自动减少60，捡到礼盒增加随机数
+        //1000毫秒调用一次
+        window.customParam.health -= 1;    //生命值：初始化100，每分钟自动减少60，捡到礼盒增加随机数
         window.customParam.health = window.customParam.health < 0 ? 0 : window.customParam.health; //小于0就应该game over，这里为了测试，能够继续玩下去
         // 在父场景中调用子场景的方法，并传递数据
         // 这种调用不会阻塞父场景，是异步调用，父场景立马返回
         this.scene.get('DataScene').refreshData();
-        this.scene.get('ChainScene').chainOperation();
+        //this.scene.get('ChainScene').chainOperation();
     }
 
     //定时删除礼物和人物
