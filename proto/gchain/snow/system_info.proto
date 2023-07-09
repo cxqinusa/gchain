@@ -1,0 +1,11 @@
+syntax = "proto3";
+package gchain.snow;
+
+option go_package = "gchain/x/snow/types";
+
+message SystemInfo {
+  uint64 nextId = 1; 
+  string left = 2; 
+  string right = 3; 
+  
+}

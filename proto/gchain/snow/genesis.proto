@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package gchain.snow;
+
+import "gogoproto/gogo.proto";
+import "gchain/snow/params.proto";
+import "gchain/snow/system_info.proto";
+import "gchain/snow/game.proto";
+
+option go_package = "gchain/x/snow/types";
+
+// GenesisState defines the snow module's genesis state.
+message GenesisState {
+           Params     params     = 1 [(gogoproto.nullable) = false];
+           SystemInfo systemInfo = 2;
+  repeated Game       gameList   = 3 [(gogoproto.nullable) = false];
+           uint64     gameCount  = 4;
+}
+

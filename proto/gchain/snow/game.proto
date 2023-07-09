@@ -1,0 +1,17 @@
+syntax = "proto3";
+package gchain.snow;
+
+option go_package = "gchain/x/snow/types";
+
+message Game {
+  uint64 id = 1;
+  string gameName = 2; 
+  string player = 3; 
+  string puzzle = 4; 
+  string deadline = 5; 
+  string blockOutTime = 6; 
+  string beforeIndex = 7; 
+  string afterIndex = 8; 
+  string status = 9; 
+  
+}

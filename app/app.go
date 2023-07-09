@@ -103,6 +103,9 @@ import (
 	tmos "github.com/tendermint/tendermint/libs/os"
 	dbm "github.com/tendermint/tm-db"
 
+	snowmodule "gchain/x/snow"
+	snowmodulekeeper "gchain/x/snow/keeper"
+	snowmoduletypes "gchain/x/snow/types"
 	swapmodule "gchain/x/swap"
 	swapmodulekeeper "gchain/x/swap/keeper"
 	swapmoduletypes "gchain/x/swap/types"
@@ -165,6 +168,7 @@ var (
 		ica.AppModuleBasic{},
 		vesting.AppModuleBasic{},
 		swapmodule.AppModuleBasic{},
+		snowmodule.AppModuleBasic{},
 		// this line is used by starport scaffolding # stargate/app/moduleBasic
 	)
 
@@ -179,6 +183,7 @@ var (
 		govtypes.ModuleName:            {authtypes.Burner},
 		ibctransfertypes.ModuleName:    {authtypes.Minter, authtypes.Burner},
 		swapmoduletypes.ModuleName:     {authtypes.Minter, authtypes.Burner, authtypes.Staking},
+		snowmoduletypes.ModuleName:     {authtypes.Minter, authtypes.Burner, authtypes.Staking},
 		// this line is used by starport scaffolding # stargate/app/maccPerms
 	}
 )
@@ -240,6 +245,8 @@ type App struct {
 	ScopedICAHostKeeper  capabilitykeeper.ScopedKeeper
 
 	SwapKeeper swapmodulekeeper.Keeper
+
+	SnowKeeper snowmodulekeeper.Keeper
 	// this line is used by starport scaffolding # stargate/app/keeperDeclaration
 
 	// mm is the module manager
@@ -285,6 +292,7 @@ func New(
 		ibctransfertypes.StoreKey, icahosttypes.StoreKey, capabilitytypes.StoreKey, group.StoreKey,
 		icacontrollertypes.StoreKey,
 		swapmoduletypes.StoreKey,
+		snowmoduletypes.StoreKey,
 		// this line is used by starport scaffolding # stargate/app/storeKey
 	)
 	tkeys := sdk.NewTransientStoreKeys(paramstypes.TStoreKey)
@@ -507,6 +515,16 @@ func New(
 	)
 	swapModule := swapmodule.NewAppModule(appCodec, app.SwapKeeper, app.AccountKeeper, app.BankKeeper)
 
+	app.SnowKeeper = *snowmodulekeeper.NewKeeper(
+		appCodec,
+		keys[snowmoduletypes.StoreKey],
+		keys[snowmoduletypes.MemStoreKey],
+		app.GetSubspace(snowmoduletypes.ModuleName),
+
+		app.BankKeeper,
+	)
+	snowModule := snowmodule.NewAppModule(appCodec, app.SnowKeeper, app.AccountKeeper, app.BankKeeper)
+
 	// this line is used by starport scaffolding # stargate/app/keeperDefinition
 
 	/**** IBC Routing ****/
@@ -573,6 +591,7 @@ func New(
 		transferModule,
 		icaModule,
 		swapModule,
+		snowModule,
 		// this line is used by starport scaffolding # stargate/app/appModule
 	)
 
@@ -603,6 +622,7 @@ func New(
 		paramstypes.ModuleName,
 		vestingtypes.ModuleName,
 		swapmoduletypes.ModuleName,
+		snowmoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/beginBlockers
 	)
 
@@ -628,6 +648,7 @@ func New(
 		upgradetypes.ModuleName,
 		vestingtypes.ModuleName,
 		swapmoduletypes.ModuleName,
+		snowmoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/endBlockers
 	)
 
@@ -658,6 +679,7 @@ func New(
 		upgradetypes.ModuleName,
 		vestingtypes.ModuleName,
 		swapmoduletypes.ModuleName,
+		snowmoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/initGenesis
 	)
 
@@ -688,6 +710,7 @@ func New(
 		ibc.NewAppModule(app.IBCKeeper),
 		transferModule,
 		swapModule,
+		snowModule,
 		// this line is used by starport scaffolding # stargate/app/appModule
 	)
 	app.sm.RegisterStoreDecoders()
@@ -893,6 +916,7 @@ func initParamsKeeper(appCodec codec.BinaryCodec, legacyAmino *codec.LegacyAmino
 	paramsKeeper.Subspace(icacontrollertypes.SubModuleName)
 	paramsKeeper.Subspace(icahosttypes.SubModuleName)
 	paramsKeeper.Subspace(swapmoduletypes.ModuleName)
+	paramsKeeper.Subspace(snowmoduletypes.ModuleName)
 	// this line is used by starport scaffolding # stargate/app/paramSubspace
 
 	return paramsKeeper

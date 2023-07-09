@@ -1,0 +1,71 @@
+syntax = "proto3";
+
+package gchain.snow;
+
+import "gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+import "cosmos/base/query/v1beta1/pagination.proto";
+import "gchain/snow/params.proto";
+import "gchain/snow/system_info.proto";
+import "gchain/snow/game.proto";
+
+option go_package = "gchain/x/snow/types";
+
+// Query defines the gRPC querier service.
+service Query {
+  
+  // Parameters queries the parameters of the module.
+  rpc Params (QueryParamsRequest) returns (QueryParamsResponse) {
+    option (google.api.http).get = "/gchain/snow/params";
+  
+  }
+  
+  // Queries a SystemInfo by index.
+  rpc SystemInfo (QueryGetSystemInfoRequest) returns (QueryGetSystemInfoResponse) {
+    option (google.api.http).get = "/gchain/snow/system_info";
+  
+  }
+  
+  // Queries a list of Game items.
+  rpc Game    (QueryGetGameRequest) returns (QueryGetGameResponse) {
+    option (google.api.http).get = "/gchain/snow/game/{id}";
+  
+  }
+  rpc GameAll (QueryAllGameRequest) returns (QueryAllGameResponse) {
+    option (google.api.http).get = "/gchain/snow/game";
+  
+  }
+}
+// QueryParamsRequest is request type for the Query/Params RPC method.
+message QueryParamsRequest {}
+
+// QueryParamsResponse is response type for the Query/Params RPC method.
+message QueryParamsResponse {
+  
+  // params holds all the parameters of this module.
+  Params params = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryGetSystemInfoRequest {}
+
+message QueryGetSystemInfoResponse {
+  SystemInfo SystemInfo = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryGetGameRequest {
+  uint64 id = 1;
+}
+
+message QueryGetGameResponse {
+  Game Game = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllGameRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllGameResponse {
+  repeated Game                                   Game       = 1 [(gogoproto.nullable) = false];
+           cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+

@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package gchain.snow;
+
+option go_package = "gchain/x/snow/types";
+
+// Msg defines the Msg service.
+service Msg {
+  rpc StartGame   (MsgStartGame  ) returns (MsgStartGameResponse  );
+  rpc SolvePuzzle (MsgSolvePuzzle) returns (MsgSolvePuzzleResponse);
+}
+message MsgStartGame {
+  string creator  = 1;
+  string gameName = 2;
+}
+
+message MsgStartGameResponse {
+  uint64 id = 1;
+}
+
+message MsgSolvePuzzle {
+  string creator = 1;
+  string id      = 2;
+  string puzzle  = 3;
+}
+
+message MsgSolvePuzzleResponse {}
+
