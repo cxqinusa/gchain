@@ -27,8 +27,7 @@ function showAlert(message) {
 
 async function tryToConnectKeplr() {
     console.log('begin tryToConnectKeplr');
-    return true;
-/*
+
     if (!window.keplr) {
         alert('Please install keplr extension.')
     } else {
@@ -54,8 +53,6 @@ async function tryToConnectKeplr() {
         window.keplrClient.address = accounts[0].address;
     }
     return window.keplrClient.signingClient == null ? false : true;
-
- */
 }
 
 async function tryToReadPlayStatus() {
@@ -85,8 +82,8 @@ async function tryToReadPlayStatus() {
                 const intelligenceString = response.data.lhc.intelligence;
                 const fightingString = response.data.lhc.fighting;
                 const healthInt = parseInt(healthString, 10); // 转换为十进制整数
-                const intelligenceInt = parseInt(healthString, 10);
-                const fightingInt = parseInt(healthString, 10);
+                const intelligenceInt = parseInt(intelligenceString, 10);
+                const fightingInt = parseInt(fightingString, 10);
 
                 if(healthInt<=0 || intelligenceInt<=0 || fightingInt<=0){
                     showAlert('温馨提示：令狐冲的生命值不够，请先购买！');
