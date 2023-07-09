@@ -20,6 +20,14 @@ export interface RpcStatus {
   details?: ProtobufAny[];
 }
 
+export type SwapMsgAddLiquidityResponse = object;
+
+export type SwapMsgDistributeCoinsResponse = object;
+
+export type SwapMsgMintCoinsResponse = object;
+
+export type SwapMsgSwapCoinResponse = object;
+
 /**
  * Params defines the parameters for the module.
  */
@@ -34,6 +42,17 @@ export interface SwapParams {
 export interface SwapQueryParamsResponse {
   /** params holds all the parameters of this module. */
   params?: SwapParams;
+}
+
+/**
+* Coin defines a token with a denomination and an amount.
+
+NOTE: The amount field is an Int which implements the custom method
+signatures required by gogoproto.
+*/
+export interface V1Beta1Coin {
+  denom?: string;
+  amount?: string;
 }
 
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, ResponseType } from "axios";

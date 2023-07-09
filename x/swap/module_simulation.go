@@ -24,7 +24,23 @@ var (
 )
 
 const (
-// this line is used by starport scaffolding # simapp/module/const
+	opWeightMsgMintCoins = "op_weight_msg_mint_coins"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgMintCoins int = 100
+
+	opWeightMsgDistributeCoins = "op_weight_msg_distribute_coins"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgDistributeCoins int = 100
+
+	opWeightMsgAddLiquidity = "op_weight_msg_add_liquidity"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgAddLiquidity int = 100
+
+	opWeightMsgSwapCoin = "op_weight_msg_swap_coin"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgSwapCoin int = 100
+
+	// this line is used by starport scaffolding # simapp/module/const
 )
 
 // GenerateGenesisState creates a randomized GenState of the module
@@ -64,6 +80,50 @@ func (am AppModule) RegisterStoreDecoder(_ sdk.StoreDecoderRegistry) {}
 // WeightedOperations returns the all the gov module operations with their respective weights.
 func (am AppModule) WeightedOperations(simState module.SimulationState) []simtypes.WeightedOperation {
 	operations := make([]simtypes.WeightedOperation, 0)
+
+	var weightMsgMintCoins int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgMintCoins, &weightMsgMintCoins, nil,
+		func(_ *rand.Rand) {
+			weightMsgMintCoins = defaultWeightMsgMintCoins
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgMintCoins,
+		swapsimulation.SimulateMsgMintCoins(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgDistributeCoins int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgDistributeCoins, &weightMsgDistributeCoins, nil,
+		func(_ *rand.Rand) {
+			weightMsgDistributeCoins = defaultWeightMsgDistributeCoins
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgDistributeCoins,
+		swapsimulation.SimulateMsgDistributeCoins(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgAddLiquidity int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgAddLiquidity, &weightMsgAddLiquidity, nil,
+		func(_ *rand.Rand) {
+			weightMsgAddLiquidity = defaultWeightMsgAddLiquidity
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgAddLiquidity,
+		swapsimulation.SimulateMsgAddLiquidity(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgSwapCoin int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgSwapCoin, &weightMsgSwapCoin, nil,
+		func(_ *rand.Rand) {
+			weightMsgSwapCoin = defaultWeightMsgSwapCoin
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgSwapCoin,
+		swapsimulation.SimulateMsgSwapCoin(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
 
 	// this line is used by starport scaffolding # simapp/module/operation
 

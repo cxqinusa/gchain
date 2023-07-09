@@ -67050,6 +67050,14 @@ definitions:
           fighting:
             type: integer
             format: int32
+  gchain.swap.MsgAddLiquidityResponse:
+    type: object
+  gchain.swap.MsgDistributeCoinsResponse:
+    type: object
+  gchain.swap.MsgMintCoinsResponse:
+    type: object
+  gchain.swap.MsgSwapCoinResponse:
+    type: object
   gchain.swap.Params:
     type: object
     properties:

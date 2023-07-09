@@ -188,6 +188,7 @@ var (
 		ibctransfertypes.ModuleName:    {authtypes.Minter, authtypes.Burner},
 		swapmoduletypes.ModuleName:     {authtypes.Minter, authtypes.Burner, authtypes.Staking},
 		// this line is used by starport scaffolding # stargate/app/maccPerms
+		banktypes.ModuleName: {authtypes.Minter, authtypes.Burner},
 	}
 )
 
