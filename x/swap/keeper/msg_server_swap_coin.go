@@ -3,7 +3,6 @@ package keeper
 import (
 	"context"
 	"errors"
-
 	"gchain/x/swap/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
@@ -16,12 +15,18 @@ func (k msgServer) SwapCoin(goCtx context.Context, msg *types.MsgSwapCoin) (*typ
 		return nil, err
 	}
 
-	var amountOut sdk.Coin
+	if msg.AmountIn.Denom == "" || msg.AmountOutMin.Denom == "" {
+		return nil, err
+	}
+	if msg.AmountIn.Amount.IsZero() || msg.AmountOutMin.Amount.IsZero() {
+		return nil, err
+	}
 
-	if msg.AmountIn.Amount.GT(sdk.NewInt(1)) {
+	var amountOut sdk.Coin
+	if msg.AmountIn.Amount.GT(sdk.NewInt(0)) {
 		amountOut = sdk.NewCoin(msg.AmountOutMin.Denom, msg.AmountIn.Amount)
 	} else {
-		return nil, errors.New("amount in amount must > 1")
+		return nil, errors.New("amount in amount must > 0")
 	}
 
 	if amountOut.IsGTE(msg.AmountOutMin) {
