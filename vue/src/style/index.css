@@ -2,3 +2,8 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+#game-container canvas{
+  margin: 0 auto;
+  width:100%;
+}
