@@ -262,6 +262,21 @@ onMounted(async () => {
       console.warn("Keplr not connected");
     }
   }
+  
+  // TODO check
+  // connet wallet automaticlly
+  // a workaround for demo , and should not use it in prodution
+  window.setInterval(async ()=>{
+      console.log('check wallet', client.signer)
+     //if (client.signer) {
+      try {
+        await tryToConnectToKeplr();
+      } catch (e) {
+        console.warn("Keplr not connected");
+      }
+    //}
+  }, 3000)
+
 
   const instance = getCurrentInstance();
   if (instance) {
