@@ -8,3 +8,4 @@ build/
 
 ts-client/node_modules
 
+/.history/
