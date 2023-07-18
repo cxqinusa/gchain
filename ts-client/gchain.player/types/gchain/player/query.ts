@@ -2,6 +2,7 @@
 import _m0 from "protobufjs/minimal";
 import { Lhcdata } from "./lhcdata";
 import { Params } from "./params";
+import { Snowdata } from "./snowdata";
 
 export const protobufPackage = "gchain.player";
 
@@ -21,6 +22,14 @@ export interface QueryReadPlayerStatusRequest {
 
 export interface QueryReadPlayerStatusResponse {
   lhc: Lhcdata | undefined;
+}
+
+export interface QueryReadSnowStatusRequest {
+  address: string;
+}
+
+export interface QueryReadSnowStatusResponse {
+  snow: Snowdata | undefined;
 }
 
 function createBaseQueryParamsRequest(): QueryParamsRequest {
@@ -207,12 +216,108 @@ export const QueryReadPlayerStatusResponse = {
   },
 };
 
+function createBaseQueryReadSnowStatusRequest(): QueryReadSnowStatusRequest {
+  return { address: "" };
+}
+
+export const QueryReadSnowStatusRequest = {
+  encode(message: QueryReadSnowStatusRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.address !== "") {
+      writer.uint32(10).string(message.address);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryReadSnowStatusRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryReadSnowStatusRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.address = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryReadSnowStatusRequest {
+    return { address: isSet(object.address) ? String(object.address) : "" };
+  },
+
+  toJSON(message: QueryReadSnowStatusRequest): unknown {
+    const obj: any = {};
+    message.address !== undefined && (obj.address = message.address);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<QueryReadSnowStatusRequest>, I>>(object: I): QueryReadSnowStatusRequest {
+    const message = createBaseQueryReadSnowStatusRequest();
+    message.address = object.address ?? "";
+    return message;
+  },
+};
+
+function createBaseQueryReadSnowStatusResponse(): QueryReadSnowStatusResponse {
+  return { snow: undefined };
+}
+
+export const QueryReadSnowStatusResponse = {
+  encode(message: QueryReadSnowStatusResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.snow !== undefined) {
+      Snowdata.encode(message.snow, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryReadSnowStatusResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryReadSnowStatusResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.snow = Snowdata.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryReadSnowStatusResponse {
+    return { snow: isSet(object.snow) ? Snowdata.fromJSON(object.snow) : undefined };
+  },
+
+  toJSON(message: QueryReadSnowStatusResponse): unknown {
+    const obj: any = {};
+    message.snow !== undefined && (obj.snow = message.snow ? Snowdata.toJSON(message.snow) : undefined);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<QueryReadSnowStatusResponse>, I>>(object: I): QueryReadSnowStatusResponse {
+    const message = createBaseQueryReadSnowStatusResponse();
+    message.snow = (object.snow !== undefined && object.snow !== null) ? Snowdata.fromPartial(object.snow) : undefined;
+    return message;
+  },
+};
+
 /** Query defines the gRPC querier service. */
 export interface Query {
   /** Parameters queries the parameters of the module. */
   Params(request: QueryParamsRequest): Promise<QueryParamsResponse>;
   /** Queries a list of ReadPlayerStatus items. */
   ReadPlayerStatus(request: QueryReadPlayerStatusRequest): Promise<QueryReadPlayerStatusResponse>;
+  /** Queries a list of ReadSnowStatus items. */
+  ReadSnowStatus(request: QueryReadSnowStatusRequest): Promise<QueryReadSnowStatusResponse>;
 }
 
 export class QueryClientImpl implements Query {
@@ -221,6 +326,7 @@ export class QueryClientImpl implements Query {
     this.rpc = rpc;
     this.Params = this.Params.bind(this);
     this.ReadPlayerStatus = this.ReadPlayerStatus.bind(this);
+    this.ReadSnowStatus = this.ReadSnowStatus.bind(this);
   }
   Params(request: QueryParamsRequest): Promise<QueryParamsResponse> {
     const data = QueryParamsRequest.encode(request).finish();
@@ -232,6 +338,12 @@ export class QueryClientImpl implements Query {
     const data = QueryReadPlayerStatusRequest.encode(request).finish();
     const promise = this.rpc.request("gchain.player.Query", "ReadPlayerStatus", data);
     return promise.then((data) => QueryReadPlayerStatusResponse.decode(new _m0.Reader(data)));
+  }
+
+  ReadSnowStatus(request: QueryReadSnowStatusRequest): Promise<QueryReadSnowStatusResponse> {
+    const data = QueryReadSnowStatusRequest.encode(request).finish();
+    const promise = this.rpc.request("gchain.player.Query", "ReadSnowStatus", data);
+    return promise.then((data) => QueryReadSnowStatusResponse.decode(new _m0.Reader(data)));
   }
 }
 

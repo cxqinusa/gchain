@@ -53,6 +53,20 @@ export interface PlayerQueryReadPlayerStatusResponse {
   lhc?: PlayerLhcdata;
 }
 
+export interface PlayerQueryReadSnowStatusResponse {
+  snow?: PlayerSnowdata;
+}
+
+export interface PlayerSnowdata {
+  address?: string;
+
+  /** @format int32 */
+  health?: number;
+
+  /** @format int32 */
+  fighting?: number;
+}
+
 export interface ProtobufAny {
   "@type"?: string;
 }
@@ -216,6 +230,22 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
   queryReadPlayerStatus = (address: string, params: RequestParams = {}) =>
     this.request<PlayerQueryReadPlayerStatusResponse, RpcStatus>({
       path: `/gchain/player/read_player_status/${address}`,
+      method: "GET",
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryReadSnowStatus
+   * @summary Queries a list of ReadSnowStatus items.
+   * @request GET:/gchain/player/read_snow_status/{address}
+   */
+  queryReadSnowStatus = (address: string, params: RequestParams = {}) =>
+    this.request<PlayerQueryReadSnowStatusResponse, RpcStatus>({
+      path: `/gchain/player/read_snow_status/${address}`,
       method: "GET",
       format: "json",
       ...params,

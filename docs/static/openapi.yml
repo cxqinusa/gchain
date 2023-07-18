@@ -32702,6 +32702,52 @@ paths:
           type: string
       tags:
         - Query
+  /gchain/player/read_snow_status/{address}:
+    get:
+      summary: Queries a list of ReadSnowStatus items.
+      operationId: GchainPlayerReadSnowStatus
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              snow:
+                type: object
+                properties:
+                  address:
+                    type: string
+                  health:
+                    type: integer
+                    format: int32
+                  fighting:
+                    type: integer
+                    format: int32
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: address
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
   /gchain/swap/params:
     get:
       summary: Parameters queries the parameters of the module.
@@ -67056,6 +67102,31 @@ definitions:
           fighting:
             type: integer
             format: int32
+  gchain.player.QueryReadSnowStatusResponse:
+    type: object
+    properties:
+      snow:
+        type: object
+        properties:
+          address:
+            type: string
+          health:
+            type: integer
+            format: int32
+          fighting:
+            type: integer
+            format: int32
+  gchain.player.Snowdata:
+    type: object
+    properties:
+      address:
+        type: string
+      health:
+        type: integer
+        format: int32
+      fighting:
+        type: integer
+        format: int32
   gchain.swap.MsgAddLiquidityResponse:
     type: object
   gchain.swap.MsgDistributeCoinsResponse:

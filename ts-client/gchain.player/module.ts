@@ -7,14 +7,21 @@ import { msgTypes } from './registry';
 import { IgniteClient } from "../client"
 import { MissingWalletError } from "../helpers"
 import { Api } from "./rest";
+import { MsgTransferPlayerStatus } from "./types/gchain/player/tx";
 import { MsgUpdatePlayerStatus } from "./types/gchain/player/tx";
 import { MsgBuyPlayerStatus } from "./types/gchain/player/tx";
-import { MsgTransferPlayerStatus } from "./types/gchain/player/tx";
 
 import { Lhcdata as typeLhcdata} from "./types"
 import { Params as typeParams} from "./types"
+import { Snowdata as typeSnowdata} from "./types"
 
-export { MsgUpdatePlayerStatus, MsgBuyPlayerStatus, MsgTransferPlayerStatus };
+export { MsgTransferPlayerStatus, MsgUpdatePlayerStatus, MsgBuyPlayerStatus };
+
+type sendMsgTransferPlayerStatusParams = {
+  value: MsgTransferPlayerStatus,
+  fee?: StdFee,
+  memo?: string
+};
 
 type sendMsgUpdatePlayerStatusParams = {
   value: MsgUpdatePlayerStatus,
@@ -28,12 +35,10 @@ type sendMsgBuyPlayerStatusParams = {
   memo?: string
 };
 
-type sendMsgTransferPlayerStatusParams = {
-  value: MsgTransferPlayerStatus,
-  fee?: StdFee,
-  memo?: string
-};
 
+type msgTransferPlayerStatusParams = {
+  value: MsgTransferPlayerStatus,
+};
 
 type msgUpdatePlayerStatusParams = {
   value: MsgUpdatePlayerStatus,
@@ -41,10 +46,6 @@ type msgUpdatePlayerStatusParams = {
 
 type msgBuyPlayerStatusParams = {
   value: MsgBuyPlayerStatus,
-};
-
-type msgTransferPlayerStatusParams = {
-  value: MsgTransferPlayerStatus,
 };
 
 
@@ -77,6 +78,20 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 
   return {
 		
+		async sendMsgTransferPlayerStatus({ value, fee, memo }: sendMsgTransferPlayerStatusParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendMsgTransferPlayerStatus: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry, prefix});
+				let msg = this.msgTransferPlayerStatus({ value: MsgTransferPlayerStatus.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendMsgTransferPlayerStatus: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
 		async sendMsgUpdatePlayerStatus({ value, fee, memo }: sendMsgUpdatePlayerStatusParams): Promise<DeliverTxResponse> {
 			if (!signer) {
 					throw new Error('TxClient:sendMsgUpdatePlayerStatus: Unable to sign Tx. Signer is not present.')
@@ -105,20 +120,14 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
-		async sendMsgTransferPlayerStatus({ value, fee, memo }: sendMsgTransferPlayerStatusParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendMsgTransferPlayerStatus: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry, prefix});
-				let msg = this.msgTransferPlayerStatus({ value: MsgTransferPlayerStatus.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+		
+		msgTransferPlayerStatus({ value }: msgTransferPlayerStatusParams): EncodeObject {
+			try {
+				return { typeUrl: "/gchain.player.MsgTransferPlayerStatus", value: MsgTransferPlayerStatus.fromPartial( value ) }  
 			} catch (e: any) {
-				throw new Error('TxClient:sendMsgTransferPlayerStatus: Could not broadcast Tx: '+ e.message)
+				throw new Error('TxClient:MsgTransferPlayerStatus: Could not create message: ' + e.message)
 			}
 		},
-		
 		
 		msgUpdatePlayerStatus({ value }: msgUpdatePlayerStatusParams): EncodeObject {
 			try {
@@ -133,14 +142,6 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 				return { typeUrl: "/gchain.player.MsgBuyPlayerStatus", value: MsgBuyPlayerStatus.fromPartial( value ) }  
 			} catch (e: any) {
 				throw new Error('TxClient:MsgBuyPlayerStatus: Could not create message: ' + e.message)
-			}
-		},
-		
-		msgTransferPlayerStatus({ value }: msgTransferPlayerStatusParams): EncodeObject {
-			try {
-				return { typeUrl: "/gchain.player.MsgTransferPlayerStatus", value: MsgTransferPlayerStatus.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:MsgTransferPlayerStatus: Could not create message: ' + e.message)
 			}
 		},
 		
@@ -168,6 +169,7 @@ class SDKModule {
 		this.structure =  {
 						Lhcdata: getStructure(typeLhcdata.fromPartial({})),
 						Params: getStructure(typeParams.fromPartial({})),
+						Snowdata: getStructure(typeSnowdata.fromPartial({})),
 						
 		};
 		client.on('signer-changed',(signer) => {			

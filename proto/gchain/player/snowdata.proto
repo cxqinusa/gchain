@@ -1,0 +1,11 @@
+syntax = "proto3";
+package gchain.player;
+
+option go_package = "gchain/x/player/types";
+
+message Snowdata {
+  
+  string address = 1; 
+  int32 health = 2; 
+  int32 fighting = 3; 
+}

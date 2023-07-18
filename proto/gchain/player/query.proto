@@ -7,6 +7,7 @@ import "google/api/annotations.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
 import "gchain/player/params.proto";
 import "gchain/player/lhcdata.proto";
+import "gchain/player/snowdata.proto";
 
 option go_package = "gchain/x/player/types";
 
@@ -22,6 +23,12 @@ service Query {
   // Queries a list of ReadPlayerStatus items.
   rpc ReadPlayerStatus (QueryReadPlayerStatusRequest) returns (QueryReadPlayerStatusResponse) {
     option (google.api.http).get = "/gchain/player/read_player_status/{address}";
+  
+  }
+  
+  // Queries a list of ReadSnowStatus items.
+  rpc ReadSnowStatus (QueryReadSnowStatusRequest) returns (QueryReadSnowStatusResponse) {
+    option (google.api.http).get = "/gchain/player/read_snow_status/{address}";
   
   }
 }
@@ -41,5 +48,13 @@ message QueryReadPlayerStatusRequest {
 
 message QueryReadPlayerStatusResponse {
   Lhcdata lhc = 1;
+}
+
+message QueryReadSnowStatusRequest {
+  string address = 1;
+}
+
+message QueryReadSnowStatusResponse {
+  Snowdata snow = 1;
 }
 
