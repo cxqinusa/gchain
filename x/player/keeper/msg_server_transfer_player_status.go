@@ -7,6 +7,8 @@ import (
 	"gchain/x/player/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 )
 
 func (k msgServer) TransferPlayerStatus(goCtx context.Context, msg *types.MsgTransferPlayerStatus) (*types.MsgTransferPlayerStatusResponse, error) {
@@ -14,12 +16,12 @@ func (k msgServer) TransferPlayerStatus(goCtx context.Context, msg *types.MsgTra
 	store := ctx.KVStore(k.storeKey)
 
 	// 检查 creator 的账户余额是否足够
-	err := sdk.AccAddressFromBech32(msg.Creator)
+	_, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, "invalid creator address")
 	}
 
-	if msg.gamein != "lhc" || msg.gameout != "snow" {
+	if msg.Gamein != "lhc" || msg.Gameout != "snow" {
 		return nil, errors.New("Only supports gamein is lhc, gameout is snow")
 	}
 

@@ -17,7 +17,18 @@ func (k Keeper) ReadSnowStatus(goCtx context.Context, req *types.QueryReadSnowSt
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	// TODO: Process the query
-	_ = ctx
+	store := ctx.KVStore(k.storeKey)
+	key := []byte(types.SNOWStatusKey + req.Address)
+	value := store.Get(key)
+	if value == nil {
+		//这个是正常情况，因为还没购买
+		return &types.QueryReadSnowStatusResponse{}, nil
+	}
 
-	return &types.QueryReadSnowStatusResponse{}, nil
+	snowdata := &types.Snowdata{}
+	if err := k.cdc.Unmarshal(value, snowdata); err != nil {
+		return nil, status.Error(codes.Internal, err.Error())
+	}
+	return &types.QueryReadSnowStatusResponse{Snow: snowdata}, nil
+
 }
