@@ -63,7 +63,7 @@ The frontend app is built using the `@starport/vue` and `@starport/vuex` package
 
 你将有1500个cgt代币
 最后,
-你可以通过首页的swap按钮，将cgt代币swap到lhc，然后用lhc购买令狐冲生命值，然后用令狐冲生命值兑换成丑小鸭生命值
+你可以通过首页的swap按钮，将cgt代币swap到lhc，然后用lhc购买令狐冲生命值，然后用令狐冲生命值兑换成丑小鸭生命值。
 恭喜你！！！
 ```
 
