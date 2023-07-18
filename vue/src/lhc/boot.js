@@ -61,7 +61,7 @@ async function tryToReadPlayStatus() {
     // 调用 queryReadPlayerStatus 方法
     const queryPath = "/gchain/player/read_player_status/{address}";
 
-    window.keplrClient.address = "cgt1y5mfkqj9lckv6qsvk7ls6dm32qnjat0w54wz5r";
+   // window.keplrClient.address = "cgt1y5mfkqj9lckv6qsvk7ls6dm32qnjat0w54wz5r";
     // 构造完整的请求 URL
     const requestURL = `${gchain.rest}${queryPath.replace("{address}", encodeURIComponent(window.keplrClient.address))}`;
 

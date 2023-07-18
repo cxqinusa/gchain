@@ -193,6 +193,9 @@ let tryToConnectToKeplr = (): void => {
   let onKeplrConnect = async () => {
     state.connectWalletModal = false;
     state.modalPage = "connect";
+    let { name, bech32Address } = await getKeplrAccParams(chainId.value);
+    state.keplrParams.name = name;
+    state.keplrParams.bech32Address = bech32Address;
   };
 
   let onKeplrError = (): void => {
@@ -275,7 +278,7 @@ onMounted(async () => {
         console.warn("Keplr not connected");
       }
     //}
-  }, 3000)
+  }, 2000)
 
 
   const instance = getCurrentInstance();

@@ -5,11 +5,13 @@ import Preloader from './Preloader.js';
 import MainGame from './Game.js';
 import {SnowParams} from "./param.js";
 import DataScene from './data.js';
+import {KeplrClient} from "@/lhc/task";
 
 export function initGame(){
     console.log('initGame snow...');
     // 创建全局变量并实例化 CustomParams
-    window.snowParam = new SnowParams(100,100);
+    window.snowParam = new SnowParams(0,0);
+    window.keplrClient = new KeplrClient(null,'');
     const config = {
         type: Phaser.AUTO,
         width: 1024,

@@ -139,6 +139,18 @@
         购买成功
       </div>
     </div>
+
+    <div style="width: 100%; height: 24px" />
+
+    <div>
+      <IgntButton style="width: 100%" @click="transferStatusByTokenTx" :busy="isStatusTxOngoing" >令狐冲生命值 => 丑小鸭生命值</IgntButton>
+      <div v-if="isStatusTxError" class="flex items-center justify-center text-xs text-red-500 italic mt-2" >
+        转换失败
+      </div>
+      <div v-if="isStatusTxSuccess" class="flex items-center justify-center text-xs text-green-500 italic mt-2" >
+        转换成功
+      </div>
+    </div>
   </div>
 </template>
 <script setup lang="ts">
@@ -182,6 +194,7 @@ interface State {
   currentUIState: UI_STATE;
   lhcUIState: UI_STATE;
   swapUIState: UI_STATE;
+  transferUIState: UI_STATE;
   advancedOpen: boolean;
 }
 
@@ -196,6 +209,7 @@ const initialState: State = {
   currentUIState: UI_STATE.SEND,
   lhcUIState: UI_STATE.SEND,
   swapUIState: UI_STATE.SEND,
+  transferUIState: UI_STATE.SEND,
   advancedOpen: false,
 };
 const state = reactive(initialState);
@@ -203,6 +217,7 @@ const client = useClient();
 const sendMsgSend = client.CosmosBankV1Beta1.tx.sendMsgSend;
 const sendMsgTransfer = client.IbcApplicationsTransferV1.tx.sendMsgTransfer;
 const sendMsgBuyPlayerStatus = client.GchainPlayer.tx.sendMsgBuyPlayerStatus;
+const sendMsgTransferPlayerStatus = client.GchainPlayer.tx.sendMsgTransferPlayerStatus;
 const sendMsgSwapCoin = client.GchainSwap.tx.sendMsgSwapCoin;
 const { address } = useAddress();
 const { balances } = useAssets(100);
@@ -217,6 +232,7 @@ const resetTx = (): void => {
   state.currentUIState = UI_STATE.SEND;
   state.lhcUIState = UI_STATE.SEND;
   state.swapUIState = UI_STATE.SEND;
+  state.transferUIState = UI_STATE.SEND;
 };
 const sendTx = async (): Promise<void> => {
   state.currentUIState = UI_STATE.TX_SIGNING;
@@ -342,6 +358,17 @@ const isSwapTxError = computed<boolean>(() => {
 });
 
 
+const isStatusTxOngoing = computed<boolean>(() => {
+  return state.transferUIState === UI_STATE.TX_SIGNING;
+});
+const isStatusTxSuccess = computed<boolean>(() => {
+  return state.transferUIState === UI_STATE.TX_SUCCESS;
+});
+const isStatusTxError = computed<boolean>(() => {
+  return state.transferUIState === UI_STATE.TX_ERROR;
+});
+
+
 let validTxFees = computed<boolean>(() =>
   state.tx.fees.every((x) => {
     let parsedAmount = parseAmount(x.amount);
@@ -407,7 +434,7 @@ const buyPlayStatusByLhcTx = async (): Promise<void> => {
   let payload: any = {
     creator: address.value,
     denom: "lhc",
-    amount: "100",
+    amount: "200",
   };
 
   try {
@@ -474,6 +501,51 @@ const swapCoinsTx = async (): Promise<void> => {
   } catch (e) {
     console.error(e);
     state.swapUIState = UI_STATE.TX_ERROR;
+  }
+};
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+const transferStatusByTokenTx = async (): Promise<void> => {
+  state.transferUIState = UI_STATE.TX_SIGNING;
+
+  const fee: Array<Amount> = state.tx.fees.map((x) => ({
+    denom: x.denom,
+    amount: x.amount == "" ? "0" : x.amount,
+  }));
+
+  let memo = state.tx.memo;
+
+  let payload: any = {
+    creator: address.value,
+    gamein: "lhc",
+    gameout: "snow",
+    amount: "100",
+  };
+
+  try {
+    let ctransfer = () =>
+        sendMsgTransferPlayerStatus({
+          value: payload,
+          fee: { amount: fee as Readonly<Amount[]>, gas: "200000" },
+          memo,
+        });
+
+    const txResult = await ctransfer();
+    if (txResult.code) {
+      console.dir("transferstatus:"+JSON.stringify(txResult));
+      throw new Error();
+    }
+    resetTx();
+    state.transferUIState = UI_STATE.TX_SUCCESS;
+    setTimeout(() => {
+      resetTx();
+    }, 2500);
+  } catch (e) {
+    console.error(e);
+    state.transferUIState = UI_STATE.TX_ERROR;
   }
 };
 

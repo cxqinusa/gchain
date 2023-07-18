@@ -1,4 +1,93 @@
 import {env} from "@/env";
+import gchain from "@/config/gchain";
+import {SigningStargateClient} from "@cosmjs/stargate";
+import axios from "axios";
+
+
+function showAlert(message) {
+    const alertElement = document.createElement('div');
+    alertElement.className = 'centered-alert';
+    alertElement.textContent = message;
+    document.body.appendChild(alertElement);
+
+    setTimeout(() => {
+        alertElement.remove();
+    }, 1000);
+}
+
+async function tryToConnectKeplr() {
+    console.log('begin tryToConnectKeplr');
+
+    if (!window.keplr) {
+        alert('Please install keplr extension.')
+    } else {
+        const chainId = gchain.chainId;
+
+        await window.keplr.experimentalSuggestChain(gchain);
+        // Enabling before using the Keplr is recommended.
+        // This method will ask the user whether to allow access if they haven't visited this website.
+        // Also, it will request that the user unlock the wallet if the wallet is locked.
+        await window.keplr.enable(chainId);
+
+        const offlineSigner = window.keplr.getOfflineSigner(chainId);
+
+        // You can get the address/public keys by `getAccounts` method.
+        // It can return the array of address/public key.
+        // But, currently, Keplr extension manages only one address/public key pair.
+        // XXX: This line is needed to set the sender address for SigningCosmosClient.
+        const accounts = await offlineSigner.getAccounts();
+        console.log('keplr address:' + accounts[0].address);
+
+        const signingClient = await SigningStargateClient.connectWithSigner(gchain.rpc, offlineSigner);
+        window.keplrClient.signingClient = signingClient;
+        window.keplrClient.address = accounts[0].address;
+    }
+    return window.keplrClient.signingClient == null ? false : true;
+}
+
+async function tryToReadPlayStatus() {
+
+    //调用后台获取令狐冲生命值
+    // 调用 queryReadPlayerStatus 方法
+    const queryPath = "/gchain/player/read_snow_status/{address}";
+
+    // 构造完整的请求 URL
+    const requestURL = `${gchain.rest}${queryPath.replace("{address}", encodeURIComponent(window.keplrClient.address))}`;
+
+    let snowResult;
+    // 发起 GET 请求并获取数据
+    axios.get(requestURL)
+        .then(response => {
+            // 在这里对返回的数据进行处理或者输出
+            //console.dir("snow-status:"+JSON.stringify(response));
+            console.dir("snow-status:"+JSON.stringify(response.data));
+            // 处理响应数据
+            snowResult = response.data.snow;
+
+            if(snowResult==null){
+                showAlert('温馨提示：丑小鸭没有生命值，请先购买！');
+            }else{
+                const healthString = response.data.snow.health;
+                const fightingString = response.data.snow.fighting;
+                const healthInt = parseInt(healthString, 10); // 转换为十进制整数
+                const fightingInt = parseInt(fightingString, 10);
+
+                if(healthInt<=0 || fightingInt<=0){
+                    showAlert('温馨提示：丑小鸭的生命值不够，请先购买！');
+                }else{
+                    window.snowParam.health = healthInt;
+                    window.snowParam.fighting = fightingInt;
+                    //
+                    this.scene.start('MainGame');
+                }
+            }
+        })
+        .catch(error => {
+            // 处理请求错误
+            console.error("Failed to fetch data:", error);
+        });
+    return snowResult;
+}
 
 export default class Preloader extends Phaser.Scene
 {
@@ -11,7 +100,7 @@ export default class Preloader extends Phaser.Scene
 
     preload ()
     {
-        this.loadText = this.add.text(512, 360, 'Loading ...', { fontFamily: 'Arial', fontSize: 74, color: '#e3f2ed' });
+        this.loadText = this.add.text(512, 360, '丑小鸭大战雪人', { fontFamily: 'Arial', fontSize: 74, color: '#e3f2ed' });
         this.loadText.setOrigin(0.5);
         this.loadText.setStroke('#203c5b', 6);
         this.loadText.setShadow(2, 2, '#2d2d2d', 4, true, false);
@@ -126,6 +215,15 @@ export default class Preloader extends Phaser.Scene
             frameRate: 14
         });
 
-        this.scene.start('MainGame');
+        //
+        this.input.on('pointerdown', async () => {
+
+            //连接钱包
+            const keplrConnected = await tryToConnectKeplr();
+            console.log('tryToConnectKeplr:' + keplrConnected);
+            if (keplrConnected) {
+                await tryToReadPlayStatus.call(this); // 使用 call 方法绑定上下文
+            }
+        });
     }
 }
