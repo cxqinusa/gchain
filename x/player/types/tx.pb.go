@@ -227,37 +227,155 @@ func (m *MsgUpdatePlayerStatusResponse) GetResultId() uint64 {
 	return 0
 }
 
+type MsgTransferPlayerStatus struct {
+	Creator string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
+	Gamein  string `protobuf:"bytes,2,opt,name=gamein,proto3" json:"gamein,omitempty"`
+	Gameout string `protobuf:"bytes,3,opt,name=gameout,proto3" json:"gameout,omitempty"`
+	Amount  uint64 `protobuf:"varint,4,opt,name=amount,proto3" json:"amount,omitempty"`
+}
+
+func (m *MsgTransferPlayerStatus) Reset()         { *m = MsgTransferPlayerStatus{} }
+func (m *MsgTransferPlayerStatus) String() string { return proto.CompactTextString(m) }
+func (*MsgTransferPlayerStatus) ProtoMessage()    {}
+func (*MsgTransferPlayerStatus) Descriptor() ([]byte, []int) {
+	return fileDescriptor_8e9e7a2b006a7749, []int{4}
+}
+func (m *MsgTransferPlayerStatus) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *MsgTransferPlayerStatus) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_MsgTransferPlayerStatus.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *MsgTransferPlayerStatus) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgTransferPlayerStatus.Merge(m, src)
+}
+func (m *MsgTransferPlayerStatus) XXX_Size() int {
+	return m.Size()
+}
+func (m *MsgTransferPlayerStatus) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgTransferPlayerStatus.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MsgTransferPlayerStatus proto.InternalMessageInfo
+
+func (m *MsgTransferPlayerStatus) GetCreator() string {
+	if m != nil {
+		return m.Creator
+	}
+	return ""
+}
+
+func (m *MsgTransferPlayerStatus) GetGamein() string {
+	if m != nil {
+		return m.Gamein
+	}
+	return ""
+}
+
+func (m *MsgTransferPlayerStatus) GetGameout() string {
+	if m != nil {
+		return m.Gameout
+	}
+	return ""
+}
+
+func (m *MsgTransferPlayerStatus) GetAmount() uint64 {
+	if m != nil {
+		return m.Amount
+	}
+	return 0
+}
+
+type MsgTransferPlayerStatusResponse struct {
+	ResultId uint64 `protobuf:"varint,1,opt,name=resultId,proto3" json:"resultId,omitempty"`
+}
+
+func (m *MsgTransferPlayerStatusResponse) Reset()         { *m = MsgTransferPlayerStatusResponse{} }
+func (m *MsgTransferPlayerStatusResponse) String() string { return proto.CompactTextString(m) }
+func (*MsgTransferPlayerStatusResponse) ProtoMessage()    {}
+func (*MsgTransferPlayerStatusResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_8e9e7a2b006a7749, []int{5}
+}
+func (m *MsgTransferPlayerStatusResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *MsgTransferPlayerStatusResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_MsgTransferPlayerStatusResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *MsgTransferPlayerStatusResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgTransferPlayerStatusResponse.Merge(m, src)
+}
+func (m *MsgTransferPlayerStatusResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *MsgTransferPlayerStatusResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgTransferPlayerStatusResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MsgTransferPlayerStatusResponse proto.InternalMessageInfo
+
+func (m *MsgTransferPlayerStatusResponse) GetResultId() uint64 {
+	if m != nil {
+		return m.ResultId
+	}
+	return 0
+}
+
 func init() {
 	proto.RegisterType((*MsgBuyPlayerStatus)(nil), "gchain.player.MsgBuyPlayerStatus")
 	proto.RegisterType((*MsgBuyPlayerStatusResponse)(nil), "gchain.player.MsgBuyPlayerStatusResponse")
 	proto.RegisterType((*MsgUpdatePlayerStatus)(nil), "gchain.player.MsgUpdatePlayerStatus")
 	proto.RegisterType((*MsgUpdatePlayerStatusResponse)(nil), "gchain.player.MsgUpdatePlayerStatusResponse")
+	proto.RegisterType((*MsgTransferPlayerStatus)(nil), "gchain.player.MsgTransferPlayerStatus")
+	proto.RegisterType((*MsgTransferPlayerStatusResponse)(nil), "gchain.player.MsgTransferPlayerStatusResponse")
 }
 
 func init() { proto.RegisterFile("gchain/player/tx.proto", fileDescriptor_8e9e7a2b006a7749) }
 
 var fileDescriptor_8e9e7a2b006a7749 = []byte{
-	// 312 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0x12, 0x4b, 0x4f, 0xce, 0x48,
-	0xcc, 0xcc, 0xd3, 0x2f, 0xc8, 0x49, 0xac, 0x4c, 0x2d, 0xd2, 0x2f, 0xa9, 0xd0, 0x2b, 0x28, 0xca,
-	0x2f, 0xc9, 0x17, 0xe2, 0x85, 0x88, 0xeb, 0x41, 0xc4, 0xa5, 0xa4, 0x51, 0x95, 0xe5, 0x64, 0x24,
-	0xa7, 0x24, 0x96, 0x24, 0x42, 0xd4, 0x2a, 0xc5, 0x70, 0x09, 0xf9, 0x16, 0xa7, 0x3b, 0x95, 0x56,
-	0x06, 0x80, 0x65, 0x83, 0x4b, 0x12, 0x4b, 0x4a, 0x8b, 0x85, 0x24, 0xb8, 0xd8, 0x93, 0x8b, 0x52,
-	0x13, 0x4b, 0xf2, 0x8b, 0x24, 0x18, 0x15, 0x18, 0x35, 0x38, 0x83, 0x60, 0x5c, 0x21, 0x11, 0x2e,
-	0xd6, 0x94, 0xd4, 0xbc, 0xfc, 0x5c, 0x09, 0x26, 0xb0, 0x38, 0x84, 0x23, 0x24, 0xc6, 0xc5, 0x96,
-	0x98, 0x9b, 0x5f, 0x9a, 0x57, 0x22, 0xc1, 0xac, 0xc0, 0xa8, 0xc1, 0x12, 0x04, 0xe5, 0x29, 0xb9,
-	0x71, 0x49, 0x61, 0x9a, 0x1e, 0x94, 0x5a, 0x5c, 0x90, 0x9f, 0x57, 0x9c, 0x2a, 0xa4, 0xc1, 0xc5,
-	0x9c, 0x93, 0x91, 0x0c, 0xb6, 0x81, 0xdb, 0x48, 0x4c, 0x0f, 0xc5, 0xd5, 0x7a, 0x3e, 0x10, 0x67,
-	0x06, 0x81, 0x94, 0x28, 0x45, 0x73, 0x89, 0xfa, 0x16, 0xa7, 0x87, 0x16, 0xa4, 0x24, 0x96, 0xa4,
-	0x12, 0xe9, 0x50, 0xa8, 0xe1, 0x4c, 0x84, 0x0d, 0xb7, 0xe6, 0x92, 0xc5, 0x6a, 0x38, 0xdc, 0x9d,
-	0x52, 0x5c, 0x1c, 0x45, 0xa9, 0xc5, 0xa5, 0x39, 0x25, 0x9e, 0x29, 0x60, 0x5b, 0x58, 0x82, 0xe0,
-	0x7c, 0xa3, 0x0b, 0x8c, 0x5c, 0xcc, 0xbe, 0xc5, 0xe9, 0x42, 0xf1, 0x5c, 0xfc, 0xe8, 0x81, 0xa8,
-	0x88, 0x66, 0x29, 0x66, 0x48, 0x48, 0x69, 0x12, 0x54, 0x02, 0x77, 0x44, 0x06, 0x97, 0x10, 0x16,
-	0xff, 0xab, 0x60, 0x1a, 0x80, 0xa9, 0x4a, 0x4a, 0x87, 0x18, 0x55, 0x30, 0x9b, 0x9c, 0xf4, 0x4f,
-	0x3c, 0x92, 0x63, 0xbc, 0xf0, 0x48, 0x8e, 0xf1, 0xc1, 0x23, 0x39, 0xc6, 0x09, 0x8f, 0xe5, 0x18,
-	0x2e, 0x3c, 0x96, 0x63, 0xb8, 0xf1, 0x58, 0x8e, 0x21, 0x4a, 0x14, 0x9a, 0x92, 0x2a, 0xe0, 0x49,
-	0xae, 0xb2, 0x20, 0xb5, 0x38, 0x89, 0x0d, 0x9c, 0x94, 0x8c, 0x01, 0x01, 0x00, 0x00, 0xff, 0xff,
-	0xb3, 0xa4, 0x92, 0x9a, 0x90, 0x02, 0x00, 0x00,
+	// 383 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x8c, 0x53, 0xc1, 0x4a, 0xeb, 0x40,
+	0x14, 0x6d, 0xda, 0xbe, 0xbe, 0xd7, 0xfb, 0x10, 0x61, 0x68, 0x63, 0x88, 0x18, 0x6b, 0x10, 0xa9,
+	0x20, 0x29, 0xd4, 0xa5, 0xb8, 0xe9, 0x42, 0x10, 0x0c, 0x48, 0xd4, 0x8d, 0x0a, 0x32, 0x26, 0x63,
+	0x52, 0x48, 0x33, 0x61, 0x66, 0x02, 0xed, 0xc2, 0x7f, 0xf0, 0x93, 0x5c, 0xba, 0xec, 0xd2, 0xa5,
+	0xb4, 0x3f, 0x22, 0x4d, 0xd2, 0x60, 0x9b, 0x48, 0xb3, 0xcb, 0xb9, 0x39, 0x39, 0xe7, 0x70, 0x6e,
+	0x2e, 0xc8, 0xae, 0xed, 0xe1, 0x61, 0xd0, 0x0b, 0x7d, 0x3c, 0x21, 0xac, 0x27, 0xc6, 0x46, 0xc8,
+	0xa8, 0xa0, 0x68, 0x2b, 0x99, 0x1b, 0xc9, 0x5c, 0xdd, 0x5d, 0xa5, 0xf9, 0x9e, 0xed, 0x60, 0x81,
+	0x13, 0xae, 0xfe, 0x08, 0xc8, 0xe4, 0xee, 0x20, 0x9a, 0x5c, 0xc7, 0x6f, 0x6f, 0x04, 0x16, 0x11,
+	0x47, 0x0a, 0xfc, 0xb5, 0x19, 0xc1, 0x82, 0x32, 0x45, 0xea, 0x48, 0xdd, 0xa6, 0xb5, 0x84, 0xa8,
+	0x05, 0x7f, 0x1c, 0x12, 0xd0, 0x91, 0x52, 0x8d, 0xe7, 0x09, 0x40, 0x32, 0x34, 0xf0, 0x88, 0x46,
+	0x81, 0x50, 0x6a, 0x1d, 0xa9, 0x5b, 0xb7, 0x52, 0xa4, 0x5f, 0x80, 0x9a, 0x57, 0xb7, 0x08, 0x0f,
+	0x69, 0xc0, 0x09, 0xea, 0x42, 0xcd, 0xf7, 0xec, 0xd8, 0xe1, 0x7f, 0x5f, 0x36, 0x56, 0x52, 0x1b,
+	0x57, 0x49, 0x4c, 0x6b, 0x41, 0xd1, 0x1f, 0xa0, 0x6d, 0x72, 0xf7, 0x2e, 0x74, 0xb0, 0x20, 0x25,
+	0x83, 0xa6, 0xe2, 0xd5, 0xcd, 0xe2, 0x67, 0xb0, 0x57, 0x28, 0x9e, 0xe5, 0x54, 0xe1, 0x1f, 0x23,
+	0x3c, 0xf2, 0xc5, 0xa5, 0x13, 0xbb, 0xd4, 0xad, 0x0c, 0xeb, 0xaf, 0xb0, 0x63, 0x72, 0xf7, 0x96,
+	0xe1, 0x80, 0xbf, 0x10, 0x56, 0x32, 0x9b, 0x0c, 0x0d, 0x17, 0x8f, 0xc8, 0x30, 0x48, 0x5b, 0x4c,
+	0xd1, 0xe2, 0x8b, 0xc5, 0x13, 0x8d, 0x92, 0x1e, 0x9b, 0xd6, 0x12, 0xfe, 0x28, 0xb8, 0xbe, 0x52,
+	0xf0, 0x39, 0xec, 0xff, 0x62, 0x5f, 0x26, 0x7d, 0xff, 0xbd, 0x0a, 0x35, 0x93, 0xbb, 0xe8, 0x09,
+	0xb6, 0xd7, 0x7f, 0x81, 0x83, 0xb5, 0xca, 0xf2, 0x7b, 0x54, 0x8f, 0x37, 0x52, 0xb2, 0x10, 0x1e,
+	0xa0, 0x82, 0xed, 0x1d, 0xe6, 0x05, 0xf2, 0x2c, 0xf5, 0xa4, 0x0c, 0x2b, 0x73, 0x0a, 0xa0, 0x55,
+	0xb8, 0x8d, 0xa3, 0xbc, 0x4a, 0x11, 0x4f, 0x35, 0xca, 0xf1, 0x96, 0x7e, 0x83, 0xde, 0xc7, 0x4c,
+	0x93, 0xa6, 0x33, 0x4d, 0xfa, 0x9a, 0x69, 0xd2, 0xdb, 0x5c, 0xab, 0x4c, 0xe7, 0x5a, 0xe5, 0x73,
+	0xae, 0x55, 0xee, 0xdb, 0xe9, 0xdd, 0x8d, 0xb3, 0x03, 0x9d, 0x84, 0x84, 0x3f, 0x37, 0xe2, 0xc3,
+	0x3b, 0xfd, 0x0e, 0x00, 0x00, 0xff, 0xff, 0x85, 0xfd, 0x32, 0xd6, 0xbe, 0x03, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -274,6 +392,7 @@ const _ = grpc.SupportPackageIsVersion4
 type MsgClient interface {
 	BuyPlayerStatus(ctx context.Context, in *MsgBuyPlayerStatus, opts ...grpc.CallOption) (*MsgBuyPlayerStatusResponse, error)
 	UpdatePlayerStatus(ctx context.Context, in *MsgUpdatePlayerStatus, opts ...grpc.CallOption) (*MsgUpdatePlayerStatusResponse, error)
+	TransferPlayerStatus(ctx context.Context, in *MsgTransferPlayerStatus, opts ...grpc.CallOption) (*MsgTransferPlayerStatusResponse, error)
 }
 
 type msgClient struct {
@@ -302,10 +421,20 @@ func (c *msgClient) UpdatePlayerStatus(ctx context.Context, in *MsgUpdatePlayerS
 	return out, nil
 }
 
+func (c *msgClient) TransferPlayerStatus(ctx context.Context, in *MsgTransferPlayerStatus, opts ...grpc.CallOption) (*MsgTransferPlayerStatusResponse, error) {
+	out := new(MsgTransferPlayerStatusResponse)
+	err := c.cc.Invoke(ctx, "/gchain.player.Msg/TransferPlayerStatus", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // MsgServer is the server API for Msg service.
 type MsgServer interface {
 	BuyPlayerStatus(context.Context, *MsgBuyPlayerStatus) (*MsgBuyPlayerStatusResponse, error)
 	UpdatePlayerStatus(context.Context, *MsgUpdatePlayerStatus) (*MsgUpdatePlayerStatusResponse, error)
+	TransferPlayerStatus(context.Context, *MsgTransferPlayerStatus) (*MsgTransferPlayerStatusResponse, error)
 }
 
 // UnimplementedMsgServer can be embedded to have forward compatible implementations.
@@ -317,6 +446,9 @@ func (*UnimplementedMsgServer) BuyPlayerStatus(ctx context.Context, req *MsgBuyP
 }
 func (*UnimplementedMsgServer) UpdatePlayerStatus(ctx context.Context, req *MsgUpdatePlayerStatus) (*MsgUpdatePlayerStatusResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdatePlayerStatus not implemented")
+}
+func (*UnimplementedMsgServer) TransferPlayerStatus(ctx context.Context, req *MsgTransferPlayerStatus) (*MsgTransferPlayerStatusResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method TransferPlayerStatus not implemented")
 }
 
 func RegisterMsgServer(s grpc1.Server, srv MsgServer) {
@@ -359,6 +491,24 @@ func _Msg_UpdatePlayerStatus_Handler(srv interface{}, ctx context.Context, dec f
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Msg_TransferPlayerStatus_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgTransferPlayerStatus)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MsgServer).TransferPlayerStatus(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/gchain.player.Msg/TransferPlayerStatus",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MsgServer).TransferPlayerStatus(ctx, req.(*MsgTransferPlayerStatus))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 var _Msg_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "gchain.player.Msg",
 	HandlerType: (*MsgServer)(nil),
@@ -370,6 +520,10 @@ var _Msg_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "UpdatePlayerStatus",
 			Handler:    _Msg_UpdatePlayerStatus_Handler,
+		},
+		{
+			MethodName: "TransferPlayerStatus",
+			Handler:    _Msg_TransferPlayerStatus_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
@@ -523,6 +677,83 @@ func (m *MsgUpdatePlayerStatusResponse) MarshalToSizedBuffer(dAtA []byte) (int, 
 	return len(dAtA) - i, nil
 }
 
+func (m *MsgTransferPlayerStatus) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *MsgTransferPlayerStatus) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *MsgTransferPlayerStatus) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.Amount != 0 {
+		i = encodeVarintTx(dAtA, i, uint64(m.Amount))
+		i--
+		dAtA[i] = 0x20
+	}
+	if len(m.Gameout) > 0 {
+		i -= len(m.Gameout)
+		copy(dAtA[i:], m.Gameout)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Gameout)))
+		i--
+		dAtA[i] = 0x1a
+	}
+	if len(m.Gamein) > 0 {
+		i -= len(m.Gamein)
+		copy(dAtA[i:], m.Gamein)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Gamein)))
+		i--
+		dAtA[i] = 0x12
+	}
+	if len(m.Creator) > 0 {
+		i -= len(m.Creator)
+		copy(dAtA[i:], m.Creator)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Creator)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *MsgTransferPlayerStatusResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *MsgTransferPlayerStatusResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *MsgTransferPlayerStatusResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.ResultId != 0 {
+		i = encodeVarintTx(dAtA, i, uint64(m.ResultId))
+		i--
+		dAtA[i] = 0x8
+	}
+	return len(dAtA) - i, nil
+}
+
 func encodeVarintTx(dAtA []byte, offset int, v uint64) int {
 	offset -= sovTx(v)
 	base := offset
@@ -585,6 +816,42 @@ func (m *MsgUpdatePlayerStatus) Size() (n int) {
 }
 
 func (m *MsgUpdatePlayerStatusResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.ResultId != 0 {
+		n += 1 + sovTx(uint64(m.ResultId))
+	}
+	return n
+}
+
+func (m *MsgTransferPlayerStatus) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Creator)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	l = len(m.Gamein)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	l = len(m.Gameout)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	if m.Amount != 0 {
+		n += 1 + sovTx(uint64(m.Amount))
+	}
+	return n
+}
+
+func (m *MsgTransferPlayerStatusResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -966,6 +1233,240 @@ func (m *MsgUpdatePlayerStatusResponse) Unmarshal(dAtA []byte) error {
 		}
 		if fieldNum <= 0 {
 			return fmt.Errorf("proto: MsgUpdatePlayerStatusResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field ResultId", wireType)
+			}
+			m.ResultId = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.ResultId |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTx(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthTx
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *MsgTransferPlayerStatus) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTx
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: MsgTransferPlayerStatus: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: MsgTransferPlayerStatus: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Creator", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Creator = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Gamein", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Gamein = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 3:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Gameout", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Gameout = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 4:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Amount", wireType)
+			}
+			m.Amount = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Amount |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTx(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthTx
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *MsgTransferPlayerStatusResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTx
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: MsgTransferPlayerStatusResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: MsgTransferPlayerStatusResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:

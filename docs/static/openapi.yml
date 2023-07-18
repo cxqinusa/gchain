@@ -67017,6 +67017,12 @@ definitions:
           fighting:
             type: integer
             format: int32
+  gchain.player.MsgTransferPlayerStatusResponse:
+    type: object
+    properties:
+      resultId:
+        type: string
+        format: uint64
   gchain.player.MsgUpdatePlayerStatusResponse:
     type: object
     properties:

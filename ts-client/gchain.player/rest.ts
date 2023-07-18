@@ -26,6 +26,11 @@ export interface PlayerMsgBuyPlayerStatusResponse {
   lhc?: PlayerLhcdata;
 }
 
+export interface PlayerMsgTransferPlayerStatusResponse {
+  /** @format uint64 */
+  resultId?: string;
+}
+
 export interface PlayerMsgUpdatePlayerStatusResponse {
   /** @format uint64 */
   resultId?: string;

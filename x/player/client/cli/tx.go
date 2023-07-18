@@ -32,6 +32,7 @@ func GetTxCmd() *cobra.Command {
 
 	cmd.AddCommand(CmdBuyPlayerStatus())
 	cmd.AddCommand(CmdUpdatePlayerStatus())
+	cmd.AddCommand(CmdTransferPlayerStatus())
 	// this line is used by starport scaffolding # 1
 
 	return cmd

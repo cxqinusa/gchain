@@ -24,6 +24,17 @@ export interface MsgUpdatePlayerStatusResponse {
   resultId: number;
 }
 
+export interface MsgTransferPlayerStatus {
+  creator: string;
+  gamein: string;
+  gameout: string;
+  amount: number;
+}
+
+export interface MsgTransferPlayerStatusResponse {
+  resultId: number;
+}
+
 function createBaseMsgBuyPlayerStatus(): MsgBuyPlayerStatus {
   return { creator: "", denom: "", amount: 0 };
 }
@@ -245,10 +256,136 @@ export const MsgUpdatePlayerStatusResponse = {
   },
 };
 
+function createBaseMsgTransferPlayerStatus(): MsgTransferPlayerStatus {
+  return { creator: "", gamein: "", gameout: "", amount: 0 };
+}
+
+export const MsgTransferPlayerStatus = {
+  encode(message: MsgTransferPlayerStatus, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.creator !== "") {
+      writer.uint32(10).string(message.creator);
+    }
+    if (message.gamein !== "") {
+      writer.uint32(18).string(message.gamein);
+    }
+    if (message.gameout !== "") {
+      writer.uint32(26).string(message.gameout);
+    }
+    if (message.amount !== 0) {
+      writer.uint32(32).uint64(message.amount);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgTransferPlayerStatus {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgTransferPlayerStatus();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.creator = reader.string();
+          break;
+        case 2:
+          message.gamein = reader.string();
+          break;
+        case 3:
+          message.gameout = reader.string();
+          break;
+        case 4:
+          message.amount = longToNumber(reader.uint64() as Long);
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgTransferPlayerStatus {
+    return {
+      creator: isSet(object.creator) ? String(object.creator) : "",
+      gamein: isSet(object.gamein) ? String(object.gamein) : "",
+      gameout: isSet(object.gameout) ? String(object.gameout) : "",
+      amount: isSet(object.amount) ? Number(object.amount) : 0,
+    };
+  },
+
+  toJSON(message: MsgTransferPlayerStatus): unknown {
+    const obj: any = {};
+    message.creator !== undefined && (obj.creator = message.creator);
+    message.gamein !== undefined && (obj.gamein = message.gamein);
+    message.gameout !== undefined && (obj.gameout = message.gameout);
+    message.amount !== undefined && (obj.amount = Math.round(message.amount));
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<MsgTransferPlayerStatus>, I>>(object: I): MsgTransferPlayerStatus {
+    const message = createBaseMsgTransferPlayerStatus();
+    message.creator = object.creator ?? "";
+    message.gamein = object.gamein ?? "";
+    message.gameout = object.gameout ?? "";
+    message.amount = object.amount ?? 0;
+    return message;
+  },
+};
+
+function createBaseMsgTransferPlayerStatusResponse(): MsgTransferPlayerStatusResponse {
+  return { resultId: 0 };
+}
+
+export const MsgTransferPlayerStatusResponse = {
+  encode(message: MsgTransferPlayerStatusResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.resultId !== 0) {
+      writer.uint32(8).uint64(message.resultId);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgTransferPlayerStatusResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgTransferPlayerStatusResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.resultId = longToNumber(reader.uint64() as Long);
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgTransferPlayerStatusResponse {
+    return { resultId: isSet(object.resultId) ? Number(object.resultId) : 0 };
+  },
+
+  toJSON(message: MsgTransferPlayerStatusResponse): unknown {
+    const obj: any = {};
+    message.resultId !== undefined && (obj.resultId = Math.round(message.resultId));
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<MsgTransferPlayerStatusResponse>, I>>(
+    object: I,
+  ): MsgTransferPlayerStatusResponse {
+    const message = createBaseMsgTransferPlayerStatusResponse();
+    message.resultId = object.resultId ?? 0;
+    return message;
+  },
+};
+
 /** Msg defines the Msg service. */
 export interface Msg {
   BuyPlayerStatus(request: MsgBuyPlayerStatus): Promise<MsgBuyPlayerStatusResponse>;
   UpdatePlayerStatus(request: MsgUpdatePlayerStatus): Promise<MsgUpdatePlayerStatusResponse>;
+  TransferPlayerStatus(request: MsgTransferPlayerStatus): Promise<MsgTransferPlayerStatusResponse>;
 }
 
 export class MsgClientImpl implements Msg {
@@ -257,6 +394,7 @@ export class MsgClientImpl implements Msg {
     this.rpc = rpc;
     this.BuyPlayerStatus = this.BuyPlayerStatus.bind(this);
     this.UpdatePlayerStatus = this.UpdatePlayerStatus.bind(this);
+    this.TransferPlayerStatus = this.TransferPlayerStatus.bind(this);
   }
   BuyPlayerStatus(request: MsgBuyPlayerStatus): Promise<MsgBuyPlayerStatusResponse> {
     const data = MsgBuyPlayerStatus.encode(request).finish();
@@ -268,6 +406,12 @@ export class MsgClientImpl implements Msg {
     const data = MsgUpdatePlayerStatus.encode(request).finish();
     const promise = this.rpc.request("gchain.player.Msg", "UpdatePlayerStatus", data);
     return promise.then((data) => MsgUpdatePlayerStatusResponse.decode(new _m0.Reader(data)));
+  }
+
+  TransferPlayerStatus(request: MsgTransferPlayerStatus): Promise<MsgTransferPlayerStatusResponse> {
+    const data = MsgTransferPlayerStatus.encode(request).finish();
+    const promise = this.rpc.request("gchain.player.Msg", "TransferPlayerStatus", data);
+    return promise.then((data) => MsgTransferPlayerStatusResponse.decode(new _m0.Reader(data)));
   }
 }
 

@@ -8,8 +8,9 @@ option go_package = "gchain/x/player/types";
 
 // Msg defines the Msg service.
 service Msg {
-  rpc BuyPlayerStatus    (MsgBuyPlayerStatus   ) returns (MsgBuyPlayerStatusResponse   );
-  rpc UpdatePlayerStatus (MsgUpdatePlayerStatus) returns (MsgUpdatePlayerStatusResponse);
+  rpc BuyPlayerStatus      (MsgBuyPlayerStatus     ) returns (MsgBuyPlayerStatusResponse     );
+  rpc UpdatePlayerStatus   (MsgUpdatePlayerStatus  ) returns (MsgUpdatePlayerStatusResponse  );
+  rpc TransferPlayerStatus (MsgTransferPlayerStatus) returns (MsgTransferPlayerStatusResponse);
 }
 message MsgBuyPlayerStatus {
   string creator = 1;
@@ -27,6 +28,17 @@ message MsgUpdatePlayerStatus {
 }
 
 message MsgUpdatePlayerStatusResponse {
+  uint64 resultId = 1;
+}
+
+message MsgTransferPlayerStatus {
+  string creator = 1;
+  string gamein  = 2;
+  string gameout = 3;
+  uint64 amount  = 4;
+}
+
+message MsgTransferPlayerStatusResponse {
   uint64 resultId = 1;
 }
 
