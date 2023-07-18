@@ -6,7 +6,7 @@ To install go v1.19.10, node V18.16.1 and ignite v0.26.1, execute the following 
 
 ```
 wget https://go.dev/dl/go1.19.10.linux-amd64.tar.gz
-https://nodejs.org/dist/v18.16.1/node-v18.16.1-linux-x64.tar.xz
+wget https://nodejs.org/dist/v18.16.1/node-v18.16.1-linux-x64.tar.xz
 wget https://github.com/ignite/cli/releases/download/v0.26.1/ignite_0.26.1_linux_amd64.tar.gz
 ```
 `username/gchain` should match the `username` and `repo_name` of the Github repository to which the source code was pushed. Learn more about [the install process](https://github.com/allinbits/starport-installer).
@@ -41,17 +41,20 @@ The frontend app is built using the `@starport/vue` and `@starport/vuex` package
 
 ## 初始化链数据
 
-你需要初始化链数据才能玩令狐冲游戏，请按照以下步骤初始化:
+你需要初始化链数据才能玩令狐冲和丑小鸭游戏，请按照以下步骤初始化:
 
 ```
-铸造lhc代币:
-    gchaind tx swap mint-coins 21000000lhc --from admin --home ./build/data -y
+铸造lhc和snow代币:
+    gchaind tx swap mint-coins 21000000lhc  --from admin --home ./build/data -y
+    gchaind tx swap mint-coins 21000000snow --from admin --home ./build/data -y
     
 分发代币给admin账号:    
-    gchaind tx swap distribute-coins cgt12ltvts09ga3gj32hsmnwq922ze0gmk4t6vhwne 3000000lhc --from admin --home ./build/data -y
+    gchaind tx swap distribute-coins cgt12ltvts09ga3gj32hsmnwq922ze0gmk4t6vhwne 3000000lhc  --from admin --home ./build/data -y
+    gchaind tx swap distribute-coins cgt12ltvts09ga3gj32hsmnwq922ze0gmk4t6vhwne 5000000snow --from admin --home ./build/data -y
 
 添加流动性池子:
-    gchaind tx swap add-liquidity 10000cgt 10000lhc --from admin --home ./build/data -y
+    gchaind tx swap add-liquidity 10000cgt 10000lhc  --from admin --home ./build/data -y
+    gchaind tx swap add-liquidity 20000cgt 20000snow --from admin --home ./build/data -y
     
 然后,
 使用以下助记词登录keplr钱包:
@@ -60,7 +63,7 @@ The frontend app is built using the `@starport/vue` and `@starport/vuex` package
 
 你将有1500个cgt代币
 最后,
-你可以通过首页的swap按钮，将cgt代币swap到lhc，然后用lhc购买令狐冲生命值，
+你可以通过首页的swap按钮，将cgt代币swap到lhc，然后用lhc购买令狐冲生命值，然后用令狐冲生命值兑换成丑小鸭生命值
 恭喜你！！！
 ```
 
